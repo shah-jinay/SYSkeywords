@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Keyword Extractor</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3250;
+      --accent: #5b6ef5;
+      --text: #e2e8f0;
+      --muted: #8892b0;
+      --tech: #3b82f6;
+      --inferred: #0ea5e9;
+      --soft: #10b981;
+      --resp: #f97316;
+      --lp: #eab308;
+      --bt: #a78bfa;
+      --exp: #f59e0b;
+      --edu: #8b5cf6;
+      --role: #ec4899;
+      --other: #06b6d4;
+      --phrase: #64748b;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    header svg { color: var(--accent); flex-shrink: 0; }
+    header h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; }
+    header span {
+      font-size: 0.8rem; color: var(--muted); margin-left: auto;
+      background: var(--surface2); border: 1px solid var(--border);
+      padding: 0.2rem 0.6rem; border-radius: 999px;
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: calc(100vh - 65px);
+    }
+
+    /* ── Left panel ─────────────────────────────────────────────────────── */
+    .left-panel {
+      padding: 1.5rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .left-panel label {
+      font-size: 0.8rem; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    textarea {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      padding: 1rem;
+      resize: none;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    textarea:focus { border-color: var(--accent); }
+    textarea::placeholder { color: var(--muted); }
+
+    .actions { display: flex; gap: 0.75rem; align-items: center; }
+
+    #extract-btn {
+      flex: 1;
+      background: var(--accent); color: #fff; border: none;
+      border-radius: 8px; padding: 0.75rem 1.5rem;
+      font-size: 0.9rem; font-weight: 600; cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    #extract-btn:hover { opacity: 0.9; }
+    #extract-btn:active { transform: scale(0.98); }
+    #extract-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    #clear-btn {
+      background: var(--surface2); color: var(--muted);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.75rem 1rem; font-size: 0.85rem; cursor: pointer;
+      transition: color 0.2s;
+    }
+    #clear-btn:hover { color: var(--text); }
+
+    #char-count { font-size: 0.75rem; color: var(--muted); text-align: right; }
+
+    /* ── Right panel ────────────────────────────────────────────────────── */
+    .right-panel {
+      padding: 1.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .panel-header {
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .panel-header h2 {
+      font-size: 0.8rem; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    #total-count { font-size: 0.75rem; color: var(--muted); margin-left: auto; }
+
+    #copy-json-btn {
+      background: var(--surface2); color: var(--muted);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 0.3rem 0.7rem; font-size: 0.75rem; cursor: pointer; display: none;
+    }
+    #copy-json-btn:hover { color: var(--text); }
+
+    .placeholder {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 0.75rem; color: var(--muted); text-align: center;
+    }
+    .placeholder svg { opacity: 0.3; }
+    .placeholder p { font-size: 0.9rem; }
+
+    /* ── Spinner ────────────────────────────────────────────────────────── */
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.7s linear infinite; display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-box {
+      background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+      color: #fca5a5; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.85rem;
+    }
+
+    /* ── Section divider ────────────────────────────────────────────────── */
+    .section-divider {
+      display: flex; align-items: center; gap: 0.75rem;
+      color: var(--muted); font-size: 0.7rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    .section-divider::before, .section-divider::after {
+      content: ""; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* ── Resume Checklist Card ──────────────────────────────────────────── */
+    .checklist-card {
+      background: var(--surface);
+      border: 1px solid rgba(91,110,245,0.45);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .checklist-header {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.85rem 1rem;
+      background: linear-gradient(135deg, rgba(91,110,245,0.13), rgba(124,58,237,0.07));
+      border-bottom: 1px solid rgba(91,110,245,0.2);
+      cursor: pointer; user-select: none;
+    }
+    .checklist-header h3 {
+      font-size: 0.85rem; font-weight: 700; letter-spacing: -0.01em;
+      color: #a5b4fc;
+    }
+    .checklist-header svg { color: #a5b4fc; flex-shrink: 0; }
+
+    .checklist-progress-wrap {
+      display: flex; align-items: center; gap: 0.5rem; margin-left: auto;
+    }
+    .checklist-progress-bar {
+      width: 70px; height: 5px; background: var(--border);
+      border-radius: 3px; overflow: hidden;
+    }
+    .checklist-progress-fill {
+      height: 100%; background: var(--accent);
+      border-radius: 3px; transition: width 0.3s ease;
+    }
+    .checklist-progress-text { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
+    .checklist-progress-pct {
+      font-size: 0.7rem; font-weight: 700; color: #a5b4fc; min-width: 28px;
+      text-align: right;
+    }
+    .toggle-chevron { color: var(--muted); flex-shrink: 0; transition: transform 0.2s; }
+    .toggle-chevron.up { transform: rotate(180deg); }
+
+    .checklist-body {
+      padding: 1rem; display: flex; flex-direction: column; gap: 1rem;
+    }
+
+    .ck-group-label {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.09em; color: var(--muted); margin-bottom: 0.35rem;
+    }
+    .ck-items { display: flex; flex-direction: column; gap: 0.15rem; }
+
+    .ck-item {
+      display: flex; align-items: center; gap: 0.55rem;
+      padding: 0.3rem 0.45rem; border-radius: 7px;
+      transition: background 0.12s; cursor: pointer;
+    }
+    .ck-item:hover { background: var(--surface2); }
+
+    /* Custom checkbox */
+    .ck-item input[type="checkbox"] {
+      appearance: none; -webkit-appearance: none;
+      width: 15px; height: 15px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 4px; background: transparent;
+      cursor: pointer; flex-shrink: 0;
+      transition: all 0.15s; position: relative;
+    }
+    .ck-item input[type="checkbox"]:hover { border-color: var(--accent); }
+    .ck-item input[type="checkbox"]:checked {
+      background: var(--accent); border-color: var(--accent);
+    }
+    .ck-item input[type="checkbox"]:checked::after {
+      content: "";
+      position: absolute; top: 1px; left: 3.5px;
+      width: 4px; height: 7px;
+      border: 2px solid #fff; border-top: none; border-left: none;
+      transform: rotate(45deg);
+    }
+
+    .ck-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+    .ck-label {
+      font-size: 0.82rem; color: var(--text);
+      transition: color 0.15s, text-decoration 0.15s;
+      flex: 1; line-height: 1.4;
+    }
+
+    .ck-item.done .ck-label {
+      text-decoration: line-through; color: var(--muted);
+    }
+
+    /* Checklist footer actions */
+    .ck-footer {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding-top: 0.75rem; border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .ck-btn {
+      font-size: 0.75rem; padding: 0.32rem 0.8rem; border-radius: 6px;
+      border: 1px solid var(--border); background: var(--surface2);
+      color: var(--muted); cursor: pointer; transition: color 0.15s, border-color 0.15s;
+    }
+    .ck-btn:hover { color: var(--text); border-color: rgba(91,110,245,0.5); }
+    .ck-btn.primary {
+      background: rgba(91,110,245,0.15); border-color: rgba(91,110,245,0.45);
+      color: #a5b4fc; font-weight: 600;
+    }
+    .ck-btn.primary:hover { background: rgba(91,110,245,0.25); }
+    .ck-btn.danger { margin-left: auto; }
+    .ck-btn.danger:hover { color: #fca5a5; border-color: rgba(239,68,68,0.4); }
+
+    /* ── Category cards ─────────────────────────────────────────────────── */
+    .category {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem;
+    }
+    .category-header {
+      display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;
+    }
+    .category-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .category-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+    .category-count {
+      margin-left: auto; font-size: 0.7rem; color: var(--muted);
+      background: var(--surface2); padding: 0.1rem 0.45rem; border-radius: 999px;
+    }
+    .category-note { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.6rem; font-style: italic; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      font-size: 0.78rem; padding: 0.28rem 0.7rem; border-radius: 6px;
+      font-weight: 500; cursor: default; transition: opacity 0.15s;
+    }
+    .tag:hover { opacity: 0.8; }
+
+    .tag-tech     { background: rgba(59,130,246,0.15);  color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+    .tag-inferred { background: rgba(14,165,233,0.12);  color: #7dd3fc; border: 1px dashed rgba(14,165,233,0.45); }
+    .tag-soft     { background: rgba(16,185,129,0.15);  color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
+    .tag-resp     { background: rgba(249,115,22,0.12);  color: #fdba74; border: 1px solid rgba(249,115,22,0.3); font-size:0.76rem; }
+    .tag-lp       { background: rgba(234,179,8,0.13);   color: #fde047; border: 1px solid rgba(234,179,8,0.35); font-weight:600; }
+    .tag-bt       { background: rgba(167,139,250,0.13); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.35); }
+    .tag-exp      { background: rgba(245,158,11,0.15);  color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
+    .tag-edu      { background: rgba(139,92,246,0.15);  color: #c4b5fd; border: 1px solid rgba(139,92,246,0.3); }
+    .tag-role     { background: rgba(236,72,153,0.15);  color: #f9a8d4; border: 1px solid rgba(236,72,153,0.3); }
+    .tag-other    { background: rgba(6,182,212,0.15);   color: #67e8f9; border: 1px solid rgba(6,182,212,0.3); }
+    .tag-phrase   { background: rgba(100,116,139,0.15); color: #94a3b8; border: 1px solid rgba(100,116,139,0.3); }
+
+    /* LP badge special treatment */
+    .lp-badge {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.78rem; padding: 0.3rem 0.75rem; border-radius: 8px;
+      background: rgba(234,179,8,0.1); color: #fde047;
+      border: 1px solid rgba(234,179,8,0.35); font-weight: 600;
+    }
+    .lp-badge::before {
+      content: "★"; font-size: 0.65rem; opacity: 0.8;
+    }
+    .bt-badge {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.78rem; padding: 0.3rem 0.75rem; border-radius: 8px;
+      background: rgba(167,139,250,0.1); color: #c4b5fd;
+      border: 1px solid rgba(167,139,250,0.35); font-weight: 500;
+    }
+    /* Responsibility row — full width text style */
+    .resp-item {
+      display: flex; align-items: flex-start; gap: 0.5rem;
+      padding: 0.3rem 0; border-bottom: 1px solid var(--border);
+      font-size: 0.83rem; line-height: 1.5; color: var(--text);
+    }
+    .resp-item:last-child { border-bottom: none; }
+    .resp-bullet {
+      color: var(--resp); font-size: 0.6rem; margin-top: 0.38rem;
+      flex-shrink: 0;
+    }
+
+    .empty-cat { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+
+    @media (max-width: 768px) {
+      main { grid-template-columns: 1fr; height: auto; }
+      .left-panel { height: 50vh; }
+      .right-panel { border-top: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+      <line x1="7" y1="7" x2="7.01" y2="7"/>
+    </svg>
+    <h1>Job Keyword Extractor</h1>
+    <span>100% local &mdash; no API calls</span>
+  </header>
+
+  <main>
+    <!-- LEFT: input -->
+    <div class="left-panel">
+      <label for="jd-input">Paste Job Description</label>
+      <textarea id="jd-input"
+        placeholder="Paste any job description here and click Extract Keywords..."
+        spellcheck="false"></textarea>
+      <div id="char-count">0 / 20,000 chars</div>
+      <div class="actions">
+        <button id="extract-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          Extract Keywords
+          <div class="spinner" id="spinner"></div>
+        </button>
+        <button id="clear-btn">Clear</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: results -->
+    <div class="right-panel" id="results-panel">
+      <div class="panel-header">
+        <h2>Results</h2>
+        <button id="copy-json-btn">Copy JSON</button>
+        <span id="total-count"></span>
+      </div>
+
+      <div class="placeholder" id="placeholder">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <p>Paste a job description on the left<br>and click <strong>Extract Keywords</strong></p>
+      </div>
+
+      <div id="results-content" style="display:none; flex-direction:column; gap:0.75rem;"></div>
+    </div>
+  </main>
+
+  <script>
+    const textarea      = document.getElementById("jd-input");
+    const extractBtn    = document.getElementById("extract-btn");
+    const clearBtn      = document.getElementById("clear-btn");
+    const copyJsonBtn   = document.getElementById("copy-json-btn");
+    const spinner       = document.getElementById("spinner");
+    const charCount     = document.getElementById("char-count");
+    const placeholder   = document.getElementById("placeholder");
+    const resultsContent= document.getElementById("results-content");
+    const totalCount    = document.getElementById("total-count");
+
+    let lastResults = null;
+    let ckStorageKey = null;
+
+    // ── Char counter ────────────────────────────────────────────────────────
+    textarea.addEventListener("input", () => {
+      const n = textarea.value.length;
+      charCount.textContent = `${n.toLocaleString()} / 20,000 chars`;
+      charCount.style.color = n > 18000 ? "#f87171" : "var(--muted)";
+    });
+
+    // ── Clear ───────────────────────────────────────────────────────────────
+    clearBtn.addEventListener("click", () => {
+      textarea.value = "";
+      charCount.textContent = "0 / 20,000 chars";
+      placeholder.style.display = "flex";
+      resultsContent.style.display = "none";
+      copyJsonBtn.style.display = "none";
+      totalCount.textContent = "";
+      lastResults = null;
+    });
+
+    // ── Copy JSON ───────────────────────────────────────────────────────────
+    copyJsonBtn.addEventListener("click", () => {
+      if (!lastResults) return;
+      navigator.clipboard.writeText(JSON.stringify(lastResults, null, 2));
+      copyJsonBtn.textContent = "Copied!";
+      setTimeout(() => copyJsonBtn.textContent = "Copy JSON", 1500);
+    });
+
+    // ── Extract ─────────────────────────────────────────────────────────────
+    extractBtn.addEventListener("click", async () => {
+      const text = textarea.value.trim();
+      if (!text) return;
+      extractBtn.disabled = true;
+      spinner.style.display = "block";
+      placeholder.style.display = "none";
+      resultsContent.style.display = "none";
+      resultsContent.innerHTML = "";
+      copyJsonBtn.style.display = "none";
+      totalCount.textContent = "";
+
+      try {
+        const res = await fetch("/extract", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Unknown error");
+        lastResults = data;
+        renderResults(data);
+      } catch (err) {
+        resultsContent.innerHTML = `<div class="error-box">${escHtml(err.message)}</div>`;
+        resultsContent.style.display = "flex";
+      } finally {
+        extractBtn.disabled = false;
+        spinner.style.display = "none";
+      }
+    });
+
+    textarea.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) extractBtn.click();
+    });
+
+    // ────────────────────────────────────────────────────────────────────────
+    // RESUME CHECKLIST
+    // ────────────────────────────────────────────────────────────────────────
+    function buildChecklistGroups(data) {
+      return [
+        {
+          label: "Role & Title",
+          color: "var(--role)",
+          items: data.roles || [],
+        },
+        {
+          label: "Technical Skills",
+          color: "var(--tech)",
+          items: [...(data.tech_skills || []), ...(data.inferred_domains || [])],
+        },
+        {
+          label: "Key Responsibilities",
+          color: "var(--resp)",
+          items: data.responsibilities || [],
+        },
+        {
+          label: "Leadership Principles (Amazon)",
+          color: "var(--lp)",
+          items: data.amazon_lps || [],
+        },
+        {
+          label: "Behavioral Traits",
+          color: "var(--bt)",
+          items: data.behavioral_traits || [],
+        },
+        {
+          label: "Soft Skills",
+          color: "var(--soft)",
+          items: data.soft_skills || [],
+        },
+        {
+          label: "Experience & Education",
+          color: "var(--exp)",
+          items: [...(data.experience || []), ...(data.education || [])],
+        },
+      ].filter(g => g.items.length > 0);
+    }
+
+    function makeStorageKey(data) {
+      const seed = (data.tech_skills || []).slice(0, 8).join(",");
+      return "ck_" + btoa(unescape(encodeURIComponent(seed))).substring(0, 20);
+    }
+
+    function renderChecklist(data) {
+      const groups = buildChecklistGroups(data);
+      ckStorageKey  = makeStorageKey(data);
+      const saved   = JSON.parse(localStorage.getItem(ckStorageKey) || "{}");
+
+      // Assign stable IDs
+      let idx = 0;
+      for (const g of groups) {
+        g.ids = g.items.map(() => `ck${idx++}`);
+      }
+
+      // Count totals
+      const allIds    = groups.flatMap(g => g.ids);
+      const total     = allIds.length;
+      const doneCount = allIds.filter(id => saved[id]).length;
+      const pct       = total ? Math.round((doneCount / total) * 100) : 0;
+
+      // Build groups HTML
+      let groupsHtml = "";
+      for (const g of groups) {
+        let rows = "";
+        g.items.forEach((item, i) => {
+          const id  = g.ids[i];
+          const chk = saved[id] ? "checked" : "";
+          const cls = saved[id] ? "done" : "";
+          rows += `
+            <div class="ck-item ${cls}" data-id="${id}">
+              <input type="checkbox" id="${id}" ${chk}>
+              <div class="ck-dot" style="background:${g.color}"></div>
+              <label class="ck-label" for="${id}">${escHtml(item)}</label>
+            </div>`;
+        });
+        groupsHtml += `
+          <div>
+            <div class="ck-group-label">${escHtml(g.label)}</div>
+            <div class="ck-items">${rows}</div>
+          </div>`;
+      }
+
+      const card = document.createElement("div");
+      card.className = "checklist-card";
+      card.id        = "resume-checklist";
+      card.innerHTML = `
+        <div class="checklist-header" id="ck-toggle">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M9 11l3 3L22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+          <h3>Keywords to Add to Your Resume</h3>
+          <div class="checklist-progress-wrap">
+            <span class="checklist-progress-text" id="ck-progress-text">${doneCount}/${total} added</span>
+            <div class="checklist-progress-bar">
+              <div class="checklist-progress-fill" id="ck-progress-fill" style="width:${pct}%"></div>
+            </div>
+            <span class="checklist-progress-pct" id="ck-progress-pct">${pct}%</span>
+          </div>
+          <svg class="toggle-chevron up" id="ck-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+        <div class="checklist-body" id="ck-body">
+          ${groupsHtml}
+          <div class="ck-footer">
+            <button class="ck-btn primary" id="ck-copy-unchecked">Copy unchecked</button>
+            <button class="ck-btn" id="ck-copy-all">Copy all</button>
+            <button class="ck-btn danger" id="ck-reset">Reset</button>
+          </div>
+        </div>`;
+
+      return card;
+    }
+
+    function wireChecklist(card) {
+      // Toggle collapse
+      document.getElementById("ck-toggle").addEventListener("click", (e) => {
+        if (e.target.tagName === "INPUT") return;
+        const body    = document.getElementById("ck-body");
+        const chevron = document.getElementById("ck-chevron");
+        const open    = body.style.display !== "none";
+        body.style.display = open ? "none" : "flex";
+        chevron.classList.toggle("up", !open);
+      });
+
+      // Checkbox change
+      card.querySelectorAll(".ck-item").forEach(row => {
+        const cb  = row.querySelector("input[type='checkbox']");
+        const lbl = row.querySelector(".ck-label");
+        cb.addEventListener("change", () => {
+          row.classList.toggle("done", cb.checked);
+          const store = JSON.parse(localStorage.getItem(ckStorageKey) || "{}");
+          store[row.dataset.id] = cb.checked;
+          localStorage.setItem(ckStorageKey, JSON.stringify(store));
+          refreshProgress(card);
+        });
+        // Clicking label row also toggles
+        lbl.addEventListener("click", () => {
+          cb.checked = !cb.checked;
+          cb.dispatchEvent(new Event("change"));
+        });
+      });
+
+      // Copy unchecked
+      document.getElementById("ck-copy-unchecked").addEventListener("click", function () {
+        const items = [...card.querySelectorAll(".ck-item:not(.done) .ck-label")]
+          .map(l => l.textContent.trim());
+        if (!items.length) return;
+        navigator.clipboard.writeText(items.join(", "));
+        flashBtn(this, "Copied!");
+      });
+
+      // Copy all
+      document.getElementById("ck-copy-all").addEventListener("click", function () {
+        const items = [...card.querySelectorAll(".ck-label")]
+          .map(l => l.textContent.trim());
+        navigator.clipboard.writeText(items.join(", "));
+        flashBtn(this, "Copied!");
+      });
+
+      // Reset
+      document.getElementById("ck-reset").addEventListener("click", function () {
+        card.querySelectorAll(".ck-item").forEach(row => {
+          row.querySelector("input[type='checkbox']").checked = false;
+          row.classList.remove("done");
+        });
+        localStorage.removeItem(ckStorageKey);
+        refreshProgress(card);
+        flashBtn(this, "Done");
+      });
+    }
+
+    function refreshProgress(card) {
+      const all   = card.querySelectorAll(".ck-item");
+      const done  = card.querySelectorAll(".ck-item.done");
+      const total = all.length;
+      const cnt   = done.length;
+      const pct   = total ? Math.round((cnt / total) * 100) : 0;
+      document.getElementById("ck-progress-text").textContent = `${cnt}/${total} added`;
+      document.getElementById("ck-progress-fill").style.width = `${pct}%`;
+      document.getElementById("ck-progress-pct").textContent  = `${pct}%`;
+    }
+
+    function flashBtn(btn, label) {
+      const orig = btn.textContent;
+      btn.textContent = label;
+      setTimeout(() => btn.textContent = orig, 1500);
+    }
+
+    // ────────────────────────────────────────────────────────────────────────
+    // FULL BREAKDOWN CATEGORIES
+    // ────────────────────────────────────────────────────────────────────────
+    function renderCategories(data) {
+      const defs = [
+        { key: "roles",            title: "Detected Role",                  dot: "var(--role)",     cls: "tag-role"     },
+        { key: "tech_skills",      title: "Technical Skills",               dot: "var(--tech)",     cls: "tag-tech",    note: "Direct matches + indicator phrases" },
+        { key: "inferred_domains", title: "Inferred Technical Domains",     dot: "var(--inferred)", cls: "tag-inferred",note: "Parsed from responsibility sentences" },
+        { key: "responsibilities", title: "Key Responsibilities",           dot: "var(--resp)",     cls: "resp",        note: "What the role expects you to do" },
+        { key: "amazon_lps",       title: "Amazon Leadership Principles",   dot: "var(--lp)",       cls: "lp",          note: "Detected from JD language — show these in interviews" },
+        { key: "behavioral_traits",title: "Behavioral Traits",              dot: "var(--bt)",       cls: "bt",          note: "General people-skills detected in JD context" },
+        { key: "soft_skills",      title: "Soft Skills",                    dot: "var(--soft)",     cls: "tag-soft",    note: "Direct + contextual soft-skill matches" },
+        { key: "experience",       title: "Experience Requirements",        dot: "var(--exp)",      cls: "tag-exp"      },
+        { key: "education",        title: "Education",                      dot: "var(--edu)",      cls: "tag-edu"      },
+        { key: "other_entities",   title: "Companies / Tools Mentioned",    dot: "var(--other)",    cls: "tag-other"    },
+        { key: "key_phrases",      title: "Key Phrases",                    dot: "var(--phrase)",   cls: "tag-phrase"   },
+      ];
+
+      let kwTotal = 0;
+      const cards = [];
+
+      for (const def of defs) {
+        const items = data[def.key] || [];
+        kwTotal += items.length;
+
+        const card = document.createElement("div");
+        card.className = "category";
+
+        const note = def.note
+          ? `<div class="category-note">${escHtml(def.note)}</div>`
+          : "";
+
+        let body;
+        if (items.length === 0) {
+          body = `<p class="empty-cat">None detected</p>`;
+        } else if (def.cls === "resp") {
+          // Responsibilities: line-by-line list
+          body = `<div>${items.map(i =>
+            `<div class="resp-item"><span class="resp-bullet">▶</span><span>${escHtml(i)}</span></div>`
+          ).join("")}</div>`;
+        } else if (def.cls === "lp") {
+          // Amazon LPs: star-badged pills
+          body = `<div class="tags">${items.map(i =>
+            `<span class="lp-badge">${escHtml(i)}</span>`
+          ).join("")}</div>`;
+        } else if (def.cls === "bt") {
+          // Behavioral traits: purple badges
+          body = `<div class="tags">${items.map(i =>
+            `<span class="bt-badge">${escHtml(i)}</span>`
+          ).join("")}</div>`;
+        } else {
+          body = `<div class="tags">${items.map(i =>
+            `<span class="tag ${def.cls}">${escHtml(i)}</span>`
+          ).join("")}</div>`;
+        }
+
+        card.innerHTML = `
+          <div class="category-header">
+            <div class="category-dot" style="background:${def.dot}"></div>
+            <span class="category-title" style="color:${def.dot}">${def.title}</span>
+            <span class="category-count">${items.length}</span>
+          </div>${note}${body}`;
+        cards.push(card);
+      }
+
+      return { cards, kwTotal };
+    }
+
+    // ────────────────────────────────────────────────────────────────────────
+    // MAIN RENDER
+    // ────────────────────────────────────────────────────────────────────────
+    function renderResults(data) {
+      const checklist = renderChecklist(data);
+
+      const divider = document.createElement("div");
+      divider.className = "section-divider";
+      divider.textContent = "Full Breakdown";
+
+      const { cards, kwTotal } = renderCategories(data);
+
+      resultsContent.replaceChildren(checklist, divider, ...cards);
+      resultsContent.style.display = "flex";
+
+      wireChecklist(checklist);
+
+      totalCount.textContent = `${kwTotal} keywords`;
+      copyJsonBtn.style.display = "inline-block";
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    }
+  </script>
+</body>
+</html>
