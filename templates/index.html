@@ -8,387 +8,355 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0f1117;
-      --surface: #1a1d27;
-      --surface2: #22263a;
-      --border: #2e3250;
-      --accent: #5b6ef5;
-      --text: #e2e8f0;
-      --muted: #8892b0;
-      --tech: #3b82f6;
-      --inferred: #0ea5e9;
-      --soft: #10b981;
-      --resp: #f97316;
-      --lp: #eab308;
-      --bt: #a78bfa;
-      --exp: #f59e0b;
-      --edu: #8b5cf6;
-      --role: #ec4899;
-      --other: #06b6d4;
-      --phrase: #64748b;
+      --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a; --border: #2e3250;
+      --accent: #5b6ef5; --text: #e2e8f0; --muted: #8892b0;
+      --tech: #3b82f6; --inferred: #0ea5e9; --soft: #10b981;
+      --resp: #f97316; --lp: #eab308; --bt: #a78bfa;
+      --exp: #f59e0b; --edu: #8b5cf6; --role: #ec4899;
+      --other: #06b6d4; --phrase: #64748b;
+      --green: #22c55e; --yellow: #eab308; --orange: #f97316; --red: #ef4444;
     }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+           background: var(--bg); color: var(--text); min-height: 100vh;
+           display: flex; flex-direction: column; }
 
-    header {
-      padding: 1.5rem 2rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
+    header { padding: 1.25rem 2rem; border-bottom: 1px solid var(--border);
+             display: flex; align-items: center; gap: 0.75rem; }
     header svg { color: var(--accent); flex-shrink: 0; }
-    header h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; }
-    header span {
-      font-size: 0.8rem; color: var(--muted); margin-left: auto;
-      background: var(--surface2); border: 1px solid var(--border);
-      padding: 0.2rem 0.6rem; border-radius: 999px;
-    }
+    header h1 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em; }
+    header .badge { font-size: 0.75rem; color: var(--muted); margin-left: auto;
+                    background: var(--surface2); border: 1px solid var(--border);
+                    padding: 0.2rem 0.6rem; border-radius: 999px; }
 
-    main {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      height: calc(100vh - 65px);
-    }
+    main { flex: 1; display: grid; grid-template-columns: 1fr 1fr;
+           height: calc(100vh - 57px); }
 
-    /* ── Left panel ─────────────────────────────────────────────────────── */
-    .left-panel {
-      padding: 1.5rem;
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    .left-panel label {
-      font-size: 0.8rem; font-weight: 600; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.08em;
-    }
-    textarea {
-      flex: 1;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--text);
-      font-size: 0.9rem;
-      line-height: 1.6;
-      padding: 1rem;
-      resize: none;
-      outline: none;
-      transition: border-color 0.2s;
-    }
+    /* ── LEFT PANEL ──────────────────────────────────────────────────────── */
+    .left-panel { display: flex; flex-direction: column;
+                  border-right: 1px solid var(--border); overflow: hidden; }
+
+    /* Tab bar */
+    .tab-bar { display: flex; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .tab-btn { flex: 1; padding: 0.7rem 1rem; font-size: 0.82rem; font-weight: 600;
+               background: none; border: none; color: var(--muted); cursor: pointer;
+               border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s; }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-btn .tab-lock { font-size: 0.65rem; margin-left: 0.3rem; opacity: 0.6; }
+
+    /* Shared input section layout */
+    .input-section { flex: 1; display: flex; flex-direction: column;
+                     gap: 0.75rem; padding: 1.25rem; overflow: hidden; }
+    .input-section label { font-size: 0.75rem; font-weight: 600; color: var(--muted);
+                           text-transform: uppercase; letter-spacing: 0.08em; }
+    textarea { flex: 1; background: var(--surface); border: 1px solid var(--border);
+               border-radius: 10px; color: var(--text); font-size: 0.88rem;
+               line-height: 1.6; padding: 0.9rem; resize: none; outline: none;
+               transition: border-color 0.2s; min-height: 80px; }
     textarea:focus { border-color: var(--accent); }
     textarea::placeholder { color: var(--muted); }
+    .char-count { font-size: 0.72rem; color: var(--muted); text-align: right; }
 
-    .actions { display: flex; gap: 0.75rem; align-items: center; }
+    .actions { display: flex; gap: 0.6rem; }
+    .btn-primary { flex: 1; background: var(--accent); color: #fff; border: none;
+                   border-radius: 8px; padding: 0.7rem 1.2rem; font-size: 0.88rem;
+                   font-weight: 600; cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+                   display: flex; align-items: center; justify-content: center; gap: 0.45rem; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-compare { background: linear-gradient(135deg, #7c3aed, #5b6ef5); }
+    .btn-secondary { background: var(--surface2); color: var(--muted);
+                     border: 1px solid var(--border); border-radius: 8px;
+                     padding: 0.7rem 0.9rem; font-size: 0.85rem; cursor: pointer;
+                     transition: color 0.15s; }
+    .btn-secondary:hover { color: var(--text); }
 
-    #extract-btn {
-      flex: 1;
-      background: var(--accent); color: #fff; border: none;
-      border-radius: 8px; padding: 0.75rem 1.5rem;
-      font-size: 0.9rem; font-weight: 600; cursor: pointer;
-      transition: opacity 0.2s, transform 0.1s;
-      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-    }
-    #extract-btn:hover { opacity: 0.9; }
-    #extract-btn:active { transform: scale(0.98); }
-    #extract-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    #clear-btn {
-      background: var(--surface2); color: var(--muted);
-      border: 1px solid var(--border); border-radius: 8px;
-      padding: 0.75rem 1rem; font-size: 0.85rem; cursor: pointer;
-      transition: color 0.2s;
-    }
-    #clear-btn:hover { color: var(--text); }
-
-    #char-count { font-size: 0.75rem; color: var(--muted); text-align: right; }
-
-    /* ── Right panel ────────────────────────────────────────────────────── */
-    .right-panel {
-      padding: 1.5rem;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    .panel-header {
-      display: flex; align-items: center; gap: 0.5rem;
-    }
-    .panel-header h2 {
-      font-size: 0.8rem; font-weight: 600; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.08em;
-    }
-    #total-count { font-size: 0.75rem; color: var(--muted); margin-left: auto; }
-
-    #copy-json-btn {
-      background: var(--surface2); color: var(--muted);
-      border: 1px solid var(--border); border-radius: 6px;
-      padding: 0.3rem 0.7rem; font-size: 0.75rem; cursor: pointer; display: none;
-    }
-    #copy-json-btn:hover { color: var(--text); }
-
-    .placeholder {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 0.75rem; color: var(--muted); text-align: center;
-    }
-    .placeholder svg { opacity: 0.3; }
-    .placeholder p { font-size: 0.9rem; }
-
-    /* ── Spinner ────────────────────────────────────────────────────────── */
-    .spinner {
-      width: 18px; height: 18px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: #fff; border-radius: 50%;
-      animation: spin 0.7s linear infinite; display: none;
-    }
+    .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3);
+               border-top-color: #fff; border-radius: 50%;
+               animation: spin 0.7s linear infinite; display: none; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .error-box {
-      background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
-      color: #fca5a5; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.85rem;
-    }
+    .resume-notice { font-size: 0.78rem; padding: 0.5rem 0.75rem; border-radius: 7px;
+                     background: rgba(91,110,245,0.1); border: 1px solid rgba(91,110,245,0.25);
+                     color: #a5b4fc; display: none; }
+    .resume-notice.show { display: block; }
 
-    /* ── Section divider ────────────────────────────────────────────────── */
-    .section-divider {
-      display: flex; align-items: center; gap: 0.75rem;
-      color: var(--muted); font-size: 0.7rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.1em;
-    }
-    .section-divider::before, .section-divider::after {
-      content: ""; flex: 1; height: 1px; background: var(--border);
-    }
+    /* ── RIGHT PANEL ─────────────────────────────────────────────────────── */
+    .right-panel { padding: 1.25rem; overflow-y: auto;
+                   display: flex; flex-direction: column; gap: 0.9rem; }
+    .panel-header { display: flex; align-items: center; gap: 0.5rem; }
+    .panel-header h2 { font-size: 0.75rem; font-weight: 600; color: var(--muted);
+                       text-transform: uppercase; letter-spacing: 0.08em; }
+    .panel-header-right { margin-left: auto; display: flex; gap: 0.5rem; align-items: center; }
+    .total-count { font-size: 0.72rem; color: var(--muted); }
+    .btn-sm { font-size: 0.72rem; padding: 0.28rem 0.65rem; border-radius: 6px;
+              border: 1px solid var(--border); background: var(--surface2);
+              color: var(--muted); cursor: pointer; transition: color 0.15s; display: none; }
+    .btn-sm:hover { color: var(--text); }
 
-    /* ── Resume Checklist Card ──────────────────────────────────────────── */
-    .checklist-card {
-      background: var(--surface);
-      border: 1px solid rgba(91,110,245,0.45);
-      border-radius: 12px;
-      overflow: hidden;
-    }
+    .placeholder { flex: 1; display: flex; flex-direction: column; align-items: center;
+                   justify-content: center; gap: 0.75rem; color: var(--muted); text-align: center; }
+    .placeholder svg { opacity: 0.25; }
+    .placeholder p { font-size: 0.88rem; }
 
-    .checklist-header {
-      display: flex; align-items: center; gap: 0.6rem;
-      padding: 0.85rem 1rem;
-      background: linear-gradient(135deg, rgba(91,110,245,0.13), rgba(124,58,237,0.07));
-      border-bottom: 1px solid rgba(91,110,245,0.2);
-      cursor: pointer; user-select: none;
-    }
-    .checklist-header h3 {
-      font-size: 0.85rem; font-weight: 700; letter-spacing: -0.01em;
-      color: #a5b4fc;
-    }
+    .error-box { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+                 color: #fca5a5; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.84rem; }
+
+    .section-divider { display: flex; align-items: center; gap: 0.75rem; color: var(--muted);
+                       font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+                       letter-spacing: 0.1em; }
+    .section-divider::before, .section-divider::after
+                     { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+    /* ── CHECKLIST CARD ──────────────────────────────────────────────────── */
+    .checklist-card { background: var(--surface); border: 1px solid rgba(91,110,245,0.4);
+                      border-radius: 12px; overflow: hidden; }
+    .checklist-header { display: flex; align-items: center; gap: 0.55rem; padding: 0.8rem 1rem;
+                        background: linear-gradient(135deg,rgba(91,110,245,0.12),rgba(124,58,237,0.07));
+                        border-bottom: 1px solid rgba(91,110,245,0.2);
+                        cursor: pointer; user-select: none; }
+    .checklist-header h3 { font-size: 0.84rem; font-weight: 700; color: #a5b4fc; }
     .checklist-header svg { color: #a5b4fc; flex-shrink: 0; }
-
-    .checklist-progress-wrap {
-      display: flex; align-items: center; gap: 0.5rem; margin-left: auto;
-    }
-    .checklist-progress-bar {
-      width: 70px; height: 5px; background: var(--border);
-      border-radius: 3px; overflow: hidden;
-    }
-    .checklist-progress-fill {
-      height: 100%; background: var(--accent);
-      border-radius: 3px; transition: width 0.3s ease;
-    }
-    .checklist-progress-text { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
-    .checklist-progress-pct {
-      font-size: 0.7rem; font-weight: 700; color: #a5b4fc; min-width: 28px;
-      text-align: right;
-    }
+    .ck-progress-wrap { display: flex; align-items: center; gap: 0.45rem; margin-left: auto; }
+    .ck-progress-bar { width: 65px; height: 4px; background: var(--border);
+                       border-radius: 3px; overflow: hidden; }
+    .ck-progress-fill { height: 100%; background: var(--accent); border-radius: 3px;
+                        transition: width 0.3s; }
+    .ck-progress-text { font-size: 0.7rem; color: var(--muted); white-space: nowrap; }
+    .ck-pct { font-size: 0.68rem; font-weight: 700; color: #a5b4fc; min-width: 26px; text-align: right; }
     .toggle-chevron { color: var(--muted); flex-shrink: 0; transition: transform 0.2s; }
     .toggle-chevron.up { transform: rotate(180deg); }
-
-    .checklist-body {
-      padding: 1rem; display: flex; flex-direction: column; gap: 1rem;
-    }
-
-    .ck-group-label {
-      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.09em; color: var(--muted); margin-bottom: 0.35rem;
-    }
-    .ck-items { display: flex; flex-direction: column; gap: 0.15rem; }
-
-    .ck-item {
-      display: flex; align-items: center; gap: 0.55rem;
-      padding: 0.3rem 0.45rem; border-radius: 7px;
-      transition: background 0.12s; cursor: pointer;
-    }
+    .checklist-body { padding: 0.9rem; display: flex; flex-direction: column; gap: 0.85rem; }
+    .ck-group-label { font-size: 0.67rem; font-weight: 700; text-transform: uppercase;
+                      letter-spacing: 0.09em; color: var(--muted); margin-bottom: 0.3rem; }
+    .ck-items { display: flex; flex-direction: column; gap: 0.1rem; }
+    .ck-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.28rem 0.4rem;
+               border-radius: 6px; transition: background 0.12s; cursor: pointer; }
     .ck-item:hover { background: var(--surface2); }
-
-    /* Custom checkbox */
-    .ck-item input[type="checkbox"] {
-      appearance: none; -webkit-appearance: none;
-      width: 15px; height: 15px;
-      border: 1.5px solid rgba(255,255,255,0.2);
-      border-radius: 4px; background: transparent;
-      cursor: pointer; flex-shrink: 0;
-      transition: all 0.15s; position: relative;
-    }
-    .ck-item input[type="checkbox"]:hover { border-color: var(--accent); }
-    .ck-item input[type="checkbox"]:checked {
-      background: var(--accent); border-color: var(--accent);
-    }
-    .ck-item input[type="checkbox"]:checked::after {
-      content: "";
-      position: absolute; top: 1px; left: 3.5px;
-      width: 4px; height: 7px;
-      border: 2px solid #fff; border-top: none; border-left: none;
-      transform: rotate(45deg);
-    }
-
-    .ck-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-
-    .ck-label {
-      font-size: 0.82rem; color: var(--text);
-      transition: color 0.15s, text-decoration 0.15s;
-      flex: 1; line-height: 1.4;
-    }
-
-    .ck-item.done .ck-label {
-      text-decoration: line-through; color: var(--muted);
-    }
-
-    /* Checklist footer actions */
-    .ck-footer {
-      display: flex; align-items: center; gap: 0.5rem;
-      padding-top: 0.75rem; border-top: 1px solid var(--border);
-      flex-wrap: wrap;
-    }
-    .ck-btn {
-      font-size: 0.75rem; padding: 0.32rem 0.8rem; border-radius: 6px;
-      border: 1px solid var(--border); background: var(--surface2);
-      color: var(--muted); cursor: pointer; transition: color 0.15s, border-color 0.15s;
-    }
-    .ck-btn:hover { color: var(--text); border-color: rgba(91,110,245,0.5); }
-    .ck-btn.primary {
-      background: rgba(91,110,245,0.15); border-color: rgba(91,110,245,0.45);
-      color: #a5b4fc; font-weight: 600;
-    }
-    .ck-btn.primary:hover { background: rgba(91,110,245,0.25); }
+    .ck-item input[type="checkbox"] { appearance: none; -webkit-appearance: none;
+      width: 14px; height: 14px; border: 1.5px solid rgba(255,255,255,0.18);
+      border-radius: 4px; background: transparent; cursor: pointer; flex-shrink: 0;
+      transition: all 0.15s; position: relative; }
+    .ck-item input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
+    .ck-item input[type="checkbox"]:checked::after { content: ""; position: absolute;
+      top: 1px; left: 3px; width: 4px; height: 6px;
+      border: 2px solid #fff; border-top: none; border-left: none; transform: rotate(45deg); }
+    .ck-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+    .ck-label { font-size: 0.81rem; color: var(--text); flex: 1; line-height: 1.4; }
+    .ck-item.done .ck-label { text-decoration: line-through; color: var(--muted); }
+    .ck-footer { display: flex; align-items: center; gap: 0.45rem; padding-top: 0.65rem;
+                 border-top: 1px solid var(--border); flex-wrap: wrap; }
+    .ck-btn { font-size: 0.72rem; padding: 0.28rem 0.7rem; border-radius: 6px;
+              border: 1px solid var(--border); background: var(--surface2); color: var(--muted);
+              cursor: pointer; transition: color 0.15s, border-color 0.15s; }
+    .ck-btn:hover { color: var(--text); border-color: rgba(91,110,245,0.4); }
+    .ck-btn.primary { background: rgba(91,110,245,0.14); border-color: rgba(91,110,245,0.4);
+                      color: #a5b4fc; font-weight: 600; }
     .ck-btn.danger { margin-left: auto; }
-    .ck-btn.danger:hover { color: #fca5a5; border-color: rgba(239,68,68,0.4); }
 
-    /* ── Category cards ─────────────────────────────────────────────────── */
-    .category {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1rem;
-    }
-    .category-header {
-      display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;
-    }
-    .category-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .category-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
-    .category-count {
-      margin-left: auto; font-size: 0.7rem; color: var(--muted);
-      background: var(--surface2); padding: 0.1rem 0.45rem; border-radius: 999px;
-    }
-    .category-note { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.6rem; font-style: italic; }
-
-    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .tag {
-      font-size: 0.78rem; padding: 0.28rem 0.7rem; border-radius: 6px;
-      font-weight: 500; cursor: default; transition: opacity 0.15s;
-    }
+    /* ── CATEGORY CARDS (extraction view) ───────────────────────────────── */
+    .category { background: var(--surface); border: 1px solid var(--border);
+                border-radius: 10px; padding: 0.9rem; }
+    .category-header { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.65rem; }
+    .category-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .category-title { font-size: 0.77rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .category-count { margin-left: auto; font-size: 0.68rem; color: var(--muted);
+                      background: var(--surface2); padding: 0.08rem 0.4rem; border-radius: 999px; }
+    .category-note { font-size: 0.7rem; color: var(--muted); margin-bottom: 0.55rem; font-style: italic; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .tag { font-size: 0.76rem; padding: 0.25rem 0.65rem; border-radius: 6px;
+           font-weight: 500; cursor: default; transition: opacity 0.15s; }
     .tag:hover { opacity: 0.8; }
+    .tag-tech     { background:rgba(59,130,246,.15);  color:#93c5fd; border:1px solid rgba(59,130,246,.3); }
+    .tag-inferred { background:rgba(14,165,233,.12);  color:#7dd3fc; border:1px dashed rgba(14,165,233,.45); }
+    .tag-soft     { background:rgba(16,185,129,.15);  color:#6ee7b7; border:1px solid rgba(16,185,129,.3); }
+    .tag-resp     { background:rgba(249,115,22,.12);  color:#fdba74; border:1px solid rgba(249,115,22,.3); font-size:.73rem; }
+    .tag-exp      { background:rgba(245,158,11,.15);  color:#fcd34d; border:1px solid rgba(245,158,11,.3); }
+    .tag-edu      { background:rgba(139,92,246,.15);  color:#c4b5fd; border:1px solid rgba(139,92,246,.3); }
+    .tag-role     { background:rgba(236,72,153,.15);  color:#f9a8d4; border:1px solid rgba(236,72,153,.3); }
+    .tag-other    { background:rgba(6,182,212,.15);   color:#67e8f9; border:1px solid rgba(6,182,212,.3); }
+    .tag-phrase   { background:rgba(100,116,139,.15); color:#94a3b8; border:1px solid rgba(100,116,139,.3); }
+    .lp-badge     { display:inline-flex; align-items:center; gap:.3rem; font-size:.77rem;
+                    padding:.28rem .7rem; border-radius:8px; background:rgba(234,179,8,.1);
+                    color:#fde047; border:1px solid rgba(234,179,8,.35); font-weight:600; }
+    .lp-badge::before { content:"★"; font-size:.6rem; opacity:.8; }
+    .bt-badge     { display:inline-flex; align-items:center; font-size:.77rem;
+                    padding:.28rem .7rem; border-radius:8px; background:rgba(167,139,250,.1);
+                    color:#c4b5fd; border:1px solid rgba(167,139,250,.35); }
+    .resp-item    { display:flex; align-items:flex-start; gap:.45rem; padding:.28rem 0;
+                    border-bottom:1px solid var(--border); font-size:.82rem; line-height:1.5; }
+    .resp-item:last-child { border-bottom:none; }
+    .resp-bullet  { color:var(--resp); font-size:.55rem; margin-top:.42rem; flex-shrink:0; }
+    .empty-cat    { font-size:.78rem; color:var(--muted); font-style:italic; }
 
-    .tag-tech     { background: rgba(59,130,246,0.15);  color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
-    .tag-inferred { background: rgba(14,165,233,0.12);  color: #7dd3fc; border: 1px dashed rgba(14,165,233,0.45); }
-    .tag-soft     { background: rgba(16,185,129,0.15);  color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
-    .tag-resp     { background: rgba(249,115,22,0.12);  color: #fdba74; border: 1px solid rgba(249,115,22,0.3); font-size:0.76rem; }
-    .tag-lp       { background: rgba(234,179,8,0.13);   color: #fde047; border: 1px solid rgba(234,179,8,0.35); font-weight:600; }
-    .tag-bt       { background: rgba(167,139,250,0.13); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.35); }
-    .tag-exp      { background: rgba(245,158,11,0.15);  color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
-    .tag-edu      { background: rgba(139,92,246,0.15);  color: #c4b5fd; border: 1px solid rgba(139,92,246,0.3); }
-    .tag-role     { background: rgba(236,72,153,0.15);  color: #f9a8d4; border: 1px solid rgba(236,72,153,0.3); }
-    .tag-other    { background: rgba(6,182,212,0.15);   color: #67e8f9; border: 1px solid rgba(6,182,212,0.3); }
-    .tag-phrase   { background: rgba(100,116,139,0.15); color: #94a3b8; border: 1px solid rgba(100,116,139,0.3); }
+    /* ── COMPARISON VIEW ─────────────────────────────────────────────────── */
+    .score-card { background: var(--surface); border: 1px solid var(--border);
+                  border-radius: 14px; padding: 1.2rem 1.4rem;
+                  display: flex; align-items: center; gap: 1.5rem; }
+    .score-number-wrap { text-align: center; flex-shrink: 0; }
+    .score-number { font-size: 3rem; font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
+    .score-pct-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem; }
+    .score-right { flex: 1; display: flex; flex-direction: column; gap: 0.55rem; }
+    .score-grade { font-size: 1.1rem; font-weight: 700; }
+    .score-bar-track { height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
+    .score-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+    .score-model-badge { font-size: 0.68rem; color: var(--muted); display: flex;
+                         align-items: center; gap: 0.35rem; }
+    .score-model-badge span { background: rgba(91,110,245,0.12);
+                               border: 1px solid rgba(91,110,245,0.25);
+                               color: #a5b4fc; padding: 0.12rem 0.5rem;
+                               border-radius: 999px; font-size: 0.65rem; font-weight: 600; }
 
-    /* LP badge special treatment */
-    .lp-badge {
-      display: inline-flex; align-items: center; gap: 0.35rem;
-      font-size: 0.78rem; padding: 0.3rem 0.75rem; border-radius: 8px;
-      background: rgba(234,179,8,0.1); color: #fde047;
-      border: 1px solid rgba(234,179,8,0.35); font-weight: 600;
-    }
-    .lp-badge::before {
-      content: "★"; font-size: 0.65rem; opacity: 0.8;
-    }
-    .bt-badge {
-      display: inline-flex; align-items: center; gap: 0.35rem;
-      font-size: 0.78rem; padding: 0.3rem 0.75rem; border-radius: 8px;
-      background: rgba(167,139,250,0.1); color: #c4b5fd;
-      border: 1px solid rgba(167,139,250,0.35); font-weight: 500;
-    }
-    /* Responsibility row — full width text style */
-    .resp-item {
-      display: flex; align-items: flex-start; gap: 0.5rem;
-      padding: 0.3rem 0; border-bottom: 1px solid var(--border);
-      font-size: 0.83rem; line-height: 1.5; color: var(--text);
-    }
-    .resp-item:last-child { border-bottom: none; }
-    .resp-bullet {
-      color: var(--resp); font-size: 0.6rem; margin-top: 0.38rem;
-      flex-shrink: 0;
-    }
+    .score-green  { color: var(--green); }
+    .score-blue   { color: var(--accent); }
+    .score-yellow { color: var(--yellow); }
+    .score-red    { color: var(--red); }
+    .bar-green    { background: var(--green); }
+    .bar-blue     { background: var(--accent); }
+    .bar-yellow   { background: var(--yellow); }
+    .bar-red      { background: var(--red); }
 
-    .empty-cat { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+    /* Suggestions */
+    .suggestions-card { background: var(--surface); border: 1px solid var(--border);
+                        border-radius: 10px; padding: 0.9rem; }
+    .suggestions-title { font-size: 0.75rem; font-weight: 700; color: var(--muted);
+                         text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.6rem; }
+    .suggestion { display: flex; align-items: flex-start; gap: 0.55rem; padding: 0.45rem 0.6rem;
+                  border-radius: 7px; font-size: 0.8rem; line-height: 1.5; margin-bottom: 0.35rem; }
+    .suggestion:last-child { margin-bottom: 0; }
+    .sug-critical { background: rgba(239,68,68,.1);   border: 1px solid rgba(239,68,68,.25); color: #fca5a5; }
+    .sug-warning  { background: rgba(249,115,22,.1);  border: 1px solid rgba(249,115,22,.25); color: #fdba74; }
+    .sug-lp       { background: rgba(234,179,8,.1);   border: 1px solid rgba(234,179,8,.25);  color: #fde047; }
+    .sug-info     { background: rgba(91,110,245,.1);  border: 1px solid rgba(91,110,245,.25); color: #a5b4fc; }
+    .sug-success  { background: rgba(34,197,94,.1);   border: 1px solid rgba(34,197,94,.25);  color: #86efac; }
+    .sug-icon     { flex-shrink: 0; margin-top: 0.05rem; }
+
+    /* Comparison category cards */
+    .cmp-card { background: var(--surface); border: 1px solid var(--border);
+                border-radius: 10px; padding: 0.9rem; }
+    .cmp-card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .cmp-card-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+                      letter-spacing: 0.05em; }
+    .cmp-score-badge { margin-left: auto; font-size: 0.72rem; font-weight: 700;
+                       padding: 0.1rem 0.5rem; border-radius: 999px; }
+    .cmp-bar-track { height: 4px; background: var(--border); border-radius: 3px;
+                     overflow: hidden; margin-bottom: 0.75rem; }
+    .cmp-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
+
+    .cmp-group { margin-bottom: 0.55rem; }
+    .cmp-group:last-child { margin-bottom: 0; }
+    .cmp-group-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+                       letter-spacing: 0.07em; margin-bottom: 0.35rem; }
+    .cmp-group-matched { color: var(--green); }
+    .cmp-group-partial  { color: var(--yellow); }
+    .cmp-group-missing  { color: var(--red); }
+
+    .cmp-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .cmp-tag { font-size: 0.75rem; padding: 0.22rem 0.6rem; border-radius: 6px;
+               font-weight: 500; position: relative; cursor: default; }
+    .cmp-tag-matched  { background: rgba(34,197,94,.13);  color: #86efac;
+                        border: 1px solid rgba(34,197,94,.3); }
+    .cmp-tag-implied  { background: rgba(14,165,233,.13); color: #7dd3fc;
+                        border: 1px solid rgba(14,165,233,.35); }
+    .cmp-tag-close    { background: rgba(234,179,8,.12);  color: #fde047;
+                        border: 1px solid rgba(234,179,8,.3); }
+    .cmp-tag-semantic { background: rgba(245,158,11,.1);  color: #fcd34d;
+                        border: 1px dashed rgba(245,158,11,.35); }
+    .cmp-tag-missing  { background: rgba(239,68,68,.1);   color: #fca5a5;
+                        border: 1px solid rgba(239,68,68,.25); }
+    .cmp-tag-snippet { font-size: 0.65rem; color: var(--muted); display: block;
+                       margin-top: 0.1rem; font-style: italic; }
+
+    /* Responsibility rows in comparison */
+    .cmp-resp-row { display: flex; align-items: flex-start; gap: 0.5rem;
+                    padding: 0.3rem 0.4rem; border-radius: 6px; font-size: 0.8rem;
+                    line-height: 1.5; margin-bottom: 0.2rem; }
+    .cmp-resp-matched  { background: rgba(34,197,94,.07);  border-left: 2px solid var(--green); }
+    .cmp-resp-implied  { background: rgba(14,165,233,.07); border-left: 2px solid #0ea5e9; }
+    .cmp-resp-partial  { background: rgba(234,179,8,.07);  border-left: 2px solid var(--yellow); }
+    .cmp-resp-missing  { background: rgba(239,68,68,.07);  border-left: 2px solid var(--red); opacity:.85; }
+    .cmp-resp-label { flex-shrink: 0; font-size: 0.7rem; margin-top: 0.15rem; }
+    .cmp-resp-snippet { font-size: 0.68rem; color: var(--muted); font-style: italic; }
 
     @media (max-width: 768px) {
       main { grid-template-columns: 1fr; height: auto; }
-      .left-panel { height: 50vh; }
+      .left-panel { height: 55vh; }
       .right-panel { border-top: 1px solid var(--border); }
     }
   </style>
 </head>
 <body>
   <header>
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
       <line x1="7" y1="7" x2="7.01" y2="7"/>
     </svg>
     <h1>Job Keyword Extractor</h1>
-    <span>100% local &mdash; no API calls</span>
+    <span class="badge">100% local · no API calls</span>
   </header>
 
   <main>
-    <!-- LEFT: input -->
+    <!-- ── LEFT PANEL ─────────────────────────────────────────────────────── -->
     <div class="left-panel">
-      <label for="jd-input">Paste Job Description</label>
-      <textarea id="jd-input"
-        placeholder="Paste any job description here and click Extract Keywords..."
-        spellcheck="false"></textarea>
-      <div id="char-count">0 / 20,000 chars</div>
-      <div class="actions">
-        <button id="extract-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-          </svg>
-          Extract Keywords
-          <div class="spinner" id="spinner"></div>
+      <div class="tab-bar">
+        <button class="tab-btn active" id="tab-jd-btn">Job Description</button>
+        <button class="tab-btn" id="tab-resume-btn">
+          Compare Resume <span class="tab-lock" id="tab-lock">🔒</span>
         </button>
-        <button id="clear-btn">Clear</button>
+      </div>
+
+      <!-- JD section -->
+      <div class="input-section" id="jd-section">
+        <label for="jd-input">Paste Job Description</label>
+        <textarea id="jd-input" placeholder="Paste any job description here and press Extract Keywords…" spellcheck="false"></textarea>
+        <div class="char-count" id="jd-char-count">0 / 20,000</div>
+        <div class="actions">
+          <button class="btn-primary" id="extract-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+            Extract Keywords
+            <div class="spinner" id="extract-spinner"></div>
+          </button>
+          <button class="btn-secondary" id="clear-jd-btn">Clear</button>
+        </div>
+      </div>
+
+      <!-- Resume section (hidden until JD extracted) -->
+      <div class="input-section" id="resume-section" style="display:none">
+        <label for="resume-input">Paste Resume</label>
+        <div class="resume-notice show" id="resume-notice">
+          Extract the JD first — then paste your resume here to compare.
+        </div>
+        <textarea id="resume-input" placeholder="Paste your full resume text here…" spellcheck="false"></textarea>
+        <div class="char-count" id="resume-char-count">0 / 20,000</div>
+        <div class="actions">
+          <button class="btn-primary btn-compare" id="compare-btn" disabled>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+            </svg>
+            Analyze Resume
+            <div class="spinner" id="compare-spinner"></div>
+          </button>
+          <button class="btn-secondary" id="clear-resume-btn">Clear</button>
+        </div>
       </div>
     </div>
 
-    <!-- RIGHT: results -->
-    <div class="right-panel" id="results-panel">
+    <!-- ── RIGHT PANEL ────────────────────────────────────────────────────── -->
+    <div class="right-panel" id="right-panel">
       <div class="panel-header">
-        <h2>Results</h2>
-        <button id="copy-json-btn">Copy JSON</button>
-        <span id="total-count"></span>
+        <h2 id="panel-title">Results</h2>
+        <div class="panel-header-right">
+          <span class="total-count" id="total-count"></span>
+          <button class="btn-sm" id="copy-json-btn">Copy JSON</button>
+        </div>
       </div>
 
       <div class="placeholder" id="placeholder">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
         <p>Paste a job description on the left<br>and click <strong>Extract Keywords</strong></p>
@@ -399,146 +367,212 @@
   </main>
 
   <script>
-    const textarea      = document.getElementById("jd-input");
-    const extractBtn    = document.getElementById("extract-btn");
-    const clearBtn      = document.getElementById("clear-btn");
-    const copyJsonBtn   = document.getElementById("copy-json-btn");
-    const spinner       = document.getElementById("spinner");
-    const charCount     = document.getElementById("char-count");
-    const placeholder   = document.getElementById("placeholder");
-    const resultsContent= document.getElementById("results-content");
-    const totalCount    = document.getElementById("total-count");
+    // ── state ──────────────────────────────────────────────────────────────
+    let activeTab    = "jd";
+    let lastJdData   = null;
+    let lastCompData = null;
 
-    let lastResults = null;
-    let ckStorageKey = null;
+    // ── elements ───────────────────────────────────────────────────────────
+    const jdInput        = document.getElementById("jd-input");
+    const resumeInput    = document.getElementById("resume-input");
+    const extractBtn     = document.getElementById("extract-btn");
+    const compareBtn     = document.getElementById("compare-btn");
+    const clearJdBtn     = document.getElementById("clear-jd-btn");
+    const clearResumeBtn = document.getElementById("clear-resume-btn");
+    const copyJsonBtn    = document.getElementById("copy-json-btn");
+    const jdCharCount    = document.getElementById("jd-char-count");
+    const resumeCharCount= document.getElementById("resume-char-count");
+    const placeholder    = document.getElementById("placeholder");
+    const resultsContent = document.getElementById("results-content");
+    const totalCount     = document.getElementById("total-count");
+    const panelTitle     = document.getElementById("panel-title");
+    const resumeNotice   = document.getElementById("resume-notice");
+    const tabLock        = document.getElementById("tab-lock");
+    const extractSpinner = document.getElementById("extract-spinner");
+    const compareSpinner = document.getElementById("compare-spinner");
 
-    // ── Char counter ────────────────────────────────────────────────────────
-    textarea.addEventListener("input", () => {
-      const n = textarea.value.length;
-      charCount.textContent = `${n.toLocaleString()} / 20,000 chars`;
-      charCount.style.color = n > 18000 ? "#f87171" : "var(--muted)";
+    // ── tab switching ──────────────────────────────────────────────────────
+    document.getElementById("tab-jd-btn").addEventListener("click",     () => switchTab("jd"));
+    document.getElementById("tab-resume-btn").addEventListener("click", () => switchTab("resume"));
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.getElementById("tab-jd-btn").classList.toggle("active",     tab === "jd");
+      document.getElementById("tab-resume-btn").classList.toggle("active", tab === "resume");
+      document.getElementById("jd-section").style.display     = tab === "jd"     ? "flex" : "none";
+      document.getElementById("resume-section").style.display = tab === "resume" ? "flex" : "none";
+
+      if (tab === "resume") {
+        if (lastJdData) {
+          resumeNotice.classList.remove("show");
+          compareBtn.disabled = resumeInput.value.trim().length < 10;
+        } else {
+          resumeNotice.classList.add("show");
+          compareBtn.disabled = true;
+        }
+        if (lastCompData) {
+          panelTitle.textContent = "Resume Analysis";
+          showComparisonResults(lastCompData);
+        }
+      } else {
+        if (lastJdData) {
+          panelTitle.textContent = "Extraction Results";
+          showExtractionResults(lastJdData);
+        }
+      }
+    }
+
+    // ── char counters ──────────────────────────────────────────────────────
+    jdInput.addEventListener("input", () => {
+      const n = jdInput.value.length;
+      jdCharCount.textContent = `${n.toLocaleString()} / 20,000`;
+      jdCharCount.style.color = n > 18000 ? "#f87171" : "var(--muted)";
+    });
+    resumeInput.addEventListener("input", () => {
+      const n = resumeInput.value.length;
+      resumeCharCount.textContent = `${n.toLocaleString()} / 20,000`;
+      resumeCharCount.style.color = n > 18000 ? "#f87171" : "var(--muted)";
+      compareBtn.disabled = !lastJdData || n < 10;
     });
 
-    // ── Clear ───────────────────────────────────────────────────────────────
-    clearBtn.addEventListener("click", () => {
-      textarea.value = "";
-      charCount.textContent = "0 / 20,000 chars";
+    // ── clear buttons ──────────────────────────────────────────────────────
+    clearJdBtn.addEventListener("click", () => {
+      jdInput.value = "";
+      jdCharCount.textContent = "0 / 20,000";
+      lastJdData = null;
+      tabLock.textContent = "🔒";
+      compareBtn.disabled = true;
+      resetResults();
+    });
+    clearResumeBtn.addEventListener("click", () => {
+      resumeInput.value = "";
+      resumeCharCount.textContent = "0 / 20,000";
+      lastCompData = null;
+      compareBtn.disabled = true;
+      if (activeTab === "resume") resetResults();
+    });
+
+    function resetResults() {
       placeholder.style.display = "flex";
-      resultsContent.style.display = "none";
-      copyJsonBtn.style.display = "none";
-      totalCount.textContent = "";
-      lastResults = null;
-    });
-
-    // ── Copy JSON ───────────────────────────────────────────────────────────
-    copyJsonBtn.addEventListener("click", () => {
-      if (!lastResults) return;
-      navigator.clipboard.writeText(JSON.stringify(lastResults, null, 2));
-      copyJsonBtn.textContent = "Copied!";
-      setTimeout(() => copyJsonBtn.textContent = "Copy JSON", 1500);
-    });
-
-    // ── Extract ─────────────────────────────────────────────────────────────
-    extractBtn.addEventListener("click", async () => {
-      const text = textarea.value.trim();
-      if (!text) return;
-      extractBtn.disabled = true;
-      spinner.style.display = "block";
-      placeholder.style.display = "none";
       resultsContent.style.display = "none";
       resultsContent.innerHTML = "";
       copyJsonBtn.style.display = "none";
       totalCount.textContent = "";
+    }
 
+    // ── copy JSON ──────────────────────────────────────────────────────────
+    copyJsonBtn.addEventListener("click", () => {
+      const data = activeTab === "resume" ? lastCompData : lastJdData;
+      if (!data) return;
+      navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+      copyJsonBtn.textContent = "Copied!";
+      setTimeout(() => copyJsonBtn.textContent = "Copy JSON", 1500);
+    });
+
+    // ── extract ────────────────────────────────────────────────────────────
+    extractBtn.addEventListener("click", async () => {
+      const text = jdInput.value.trim();
+      if (!text) return;
+      extractBtn.disabled = true;
+      extractSpinner.style.display = "block";
+      resetResults();
       try {
-        const res = await fetch("/extract", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text }),
-        });
+        const res  = await fetch("/extract", { method:"POST",
+          headers:{"Content-Type":"application/json"}, body: JSON.stringify({ text }) });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Unknown error");
-        lastResults = data;
-        renderResults(data);
-      } catch (err) {
-        resultsContent.innerHTML = `<div class="error-box">${escHtml(err.message)}</div>`;
-        resultsContent.style.display = "flex";
+        lastJdData = data;
+        tabLock.textContent = "✓";
+        panelTitle.textContent = "Extraction Results";
+        showExtractionResults(data);
+      } catch (e) {
+        showError(e.message);
       } finally {
         extractBtn.disabled = false;
-        spinner.style.display = "none";
+        extractSpinner.style.display = "none";
       }
     });
 
-    textarea.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) extractBtn.click();
+    // ── compare ────────────────────────────────────────────────────────────
+    compareBtn.addEventListener("click", async () => {
+      const resume = resumeInput.value.trim();
+      if (!resume || !lastJdData) return;
+      compareBtn.disabled = true;
+      compareSpinner.style.display = "block";
+      resetResults();
+      placeholder.style.display = "none";
+      resultsContent.innerHTML = `
+        <div style="display:flex;align-items:center;gap:.75rem;color:var(--muted);font-size:.85rem;padding:.5rem 0;">
+          <div class="spinner" style="display:block;border-top-color:var(--accent)"></div>
+          Analyzing with local AI model… (first run downloads ~90 MB once)
+        </div>`;
+      resultsContent.style.display = "flex";
+      try {
+        const res  = await fetch("/compare", { method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body: JSON.stringify({ jd_data: lastJdData, resume_text: resume }) });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Unknown error");
+        lastCompData = data;
+        panelTitle.textContent = "Resume Analysis";
+        showComparisonResults(data);
+      } catch (e) {
+        showError(e.message);
+      } finally {
+        compareBtn.disabled = false;
+        compareSpinner.style.display = "none";
+      }
     });
 
-    // ────────────────────────────────────────────────────────────────────────
-    // RESUME CHECKLIST
-    // ────────────────────────────────────────────────────────────────────────
-    function buildChecklistGroups(data) {
-      return [
-        {
-          label: "Role & Title",
-          color: "var(--role)",
-          items: data.roles || [],
-        },
-        {
-          label: "Technical Skills",
-          color: "var(--tech)",
-          items: [...(data.tech_skills || []), ...(data.inferred_domains || [])],
-        },
-        {
-          label: "Key Responsibilities",
-          color: "var(--resp)",
-          items: data.responsibilities || [],
-        },
-        {
-          label: "Leadership Principles (Amazon)",
-          color: "var(--lp)",
-          items: data.amazon_lps || [],
-        },
-        {
-          label: "Behavioral Traits",
-          color: "var(--bt)",
-          items: data.behavioral_traits || [],
-        },
-        {
-          label: "Soft Skills",
-          color: "var(--soft)",
-          items: data.soft_skills || [],
-        },
-        {
-          label: "Experience & Education",
-          color: "var(--exp)",
-          items: [...(data.experience || []), ...(data.education || [])],
-        },
-      ].filter(g => g.items.length > 0);
+    jdInput.addEventListener("keydown",     e => { if (e.key==="Enter"&&(e.ctrlKey||e.metaKey)) extractBtn.click(); });
+    resumeInput.addEventListener("keydown", e => { if (e.key==="Enter"&&(e.ctrlKey||e.metaKey)) compareBtn.click(); });
+
+    function showError(msg) {
+      placeholder.style.display = "none";
+      resultsContent.innerHTML  = `<div class="error-box">${escHtml(msg)}</div>`;
+      resultsContent.style.display = "flex";
     }
 
-    function makeStorageKey(data) {
-      const seed = (data.tech_skills || []).slice(0, 8).join(",");
-      return "ck_" + btoa(unescape(encodeURIComponent(seed))).substring(0, 20);
+    // ════════════════════════════════════════════════════════════════════════
+    // EXTRACTION RESULTS
+    // ════════════════════════════════════════════════════════════════════════
+    function showExtractionResults(data) {
+      placeholder.style.display    = "none";
+      const checklist = buildChecklist(data);
+      const divider   = mkEl("div", { className:"section-divider" }, "Full Breakdown");
+      const { cards, kwTotal } = buildCategoryCards(data);
+      resultsContent.replaceChildren(checklist, divider, ...cards);
+      resultsContent.style.display = "flex";
+      wireChecklist(checklist, data);
+      totalCount.textContent    = `${kwTotal} keywords`;
+      copyJsonBtn.style.display = "inline-block";
     }
 
-    function renderChecklist(data) {
-      const groups = buildChecklistGroups(data);
-      ckStorageKey  = makeStorageKey(data);
-      const saved   = JSON.parse(localStorage.getItem(ckStorageKey) || "{}");
+    // ── Checklist ──────────────────────────────────────────────────────────
+    let ckKey = null;
 
-      // Assign stable IDs
+    function buildChecklist(data) {
+      const groups = [
+        { label:"Role & Title",              color:"var(--role)", items: data.roles||[] },
+        { label:"Technical Skills",          color:"var(--tech)", items:[...(data.tech_skills||[]),...(data.inferred_domains||[])] },
+        { label:"Key Responsibilities",      color:"var(--resp)", items: data.responsibilities||[] },
+        { label:"Amazon Leadership Principles", color:"var(--lp)", items: data.amazon_lps||[] },
+        { label:"Behavioral Traits",         color:"var(--bt)",   items: data.behavioral_traits||[] },
+        { label:"Soft Skills",               color:"var(--soft)", items: data.soft_skills||[] },
+        { label:"Experience & Education",    color:"var(--exp)",  items:[...(data.experience||[]),...(data.education||[])] },
+      ].filter(g => g.items.length);
+
+      ckKey = "ck_" + btoa(unescape(encodeURIComponent((data.tech_skills||[]).slice(0,6).join(",")))).substring(0,18);
+      const saved = JSON.parse(localStorage.getItem(ckKey)||"{}");
+
       let idx = 0;
-      for (const g of groups) {
-        g.ids = g.items.map(() => `ck${idx++}`);
-      }
+      for (const g of groups) g.ids = g.items.map(() => `ck${idx++}`);
 
-      // Count totals
       const allIds    = groups.flatMap(g => g.ids);
       const total     = allIds.length;
       const doneCount = allIds.filter(id => saved[id]).length;
-      const pct       = total ? Math.round((doneCount / total) * 100) : 0;
+      const pct       = total ? Math.round(doneCount/total*100) : 0;
 
-      // Build groups HTML
       let groupsHtml = "";
       for (const g of groups) {
         let rows = "";
@@ -546,18 +580,16 @@
           const id  = g.ids[i];
           const chk = saved[id] ? "checked" : "";
           const cls = saved[id] ? "done" : "";
-          rows += `
-            <div class="ck-item ${cls}" data-id="${id}">
-              <input type="checkbox" id="${id}" ${chk}>
-              <div class="ck-dot" style="background:${g.color}"></div>
-              <label class="ck-label" for="${id}">${escHtml(item)}</label>
-            </div>`;
-        });
-        groupsHtml += `
-          <div>
-            <div class="ck-group-label">${escHtml(g.label)}</div>
-            <div class="ck-items">${rows}</div>
+          rows += `<div class="ck-item ${cls}" data-id="${id}">
+            <input type="checkbox" id="${id}" ${chk}>
+            <div class="ck-dot" style="background:${g.color}"></div>
+            <label class="ck-label" for="${id}">${escHtml(item)}</label>
           </div>`;
+        });
+        groupsHtml += `<div>
+          <div class="ck-group-label">${escHtml(g.label)}</div>
+          <div class="ck-items">${rows}</div>
+        </div>`;
       }
 
       const card = document.createElement("div");
@@ -565,19 +597,16 @@
       card.id        = "resume-checklist";
       card.innerHTML = `
         <div class="checklist-header" id="ck-toggle">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M9 11l3 3L22 4"/>
-            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
           </svg>
           <h3>Keywords to Add to Your Resume</h3>
-          <div class="checklist-progress-wrap">
-            <span class="checklist-progress-text" id="ck-progress-text">${doneCount}/${total} added</span>
-            <div class="checklist-progress-bar">
-              <div class="checklist-progress-fill" id="ck-progress-fill" style="width:${pct}%"></div>
-            </div>
-            <span class="checklist-progress-pct" id="ck-progress-pct">${pct}%</span>
+          <div class="ck-progress-wrap">
+            <span class="ck-progress-text" id="ck-prog-text">${doneCount}/${total} added</span>
+            <div class="ck-progress-bar"><div class="ck-progress-fill" id="ck-prog-fill" style="width:${pct}%"></div></div>
+            <span class="ck-pct" id="ck-prog-pct">${pct}%</span>
           </div>
-          <svg class="toggle-chevron up" id="ck-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <svg class="toggle-chevron up" id="ck-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <polyline points="6 9 12 15 18 9"/>
           </svg>
         </div>
@@ -589,141 +618,86 @@
             <button class="ck-btn danger" id="ck-reset">Reset</button>
           </div>
         </div>`;
-
       return card;
     }
 
     function wireChecklist(card) {
-      // Toggle collapse
-      document.getElementById("ck-toggle").addEventListener("click", (e) => {
+      document.getElementById("ck-toggle").addEventListener("click", e => {
         if (e.target.tagName === "INPUT") return;
-        const body    = document.getElementById("ck-body");
-        const chevron = document.getElementById("ck-chevron");
-        const open    = body.style.display !== "none";
+        const body = document.getElementById("ck-body");
+        const chev = document.getElementById("ck-chevron");
+        const open = body.style.display !== "none";
         body.style.display = open ? "none" : "flex";
-        chevron.classList.toggle("up", !open);
+        chev.classList.toggle("up", !open);
       });
-
-      // Checkbox change
       card.querySelectorAll(".ck-item").forEach(row => {
-        const cb  = row.querySelector("input[type='checkbox']");
-        const lbl = row.querySelector(".ck-label");
+        const cb = row.querySelector("input[type='checkbox']");
         cb.addEventListener("change", () => {
           row.classList.toggle("done", cb.checked);
-          const store = JSON.parse(localStorage.getItem(ckStorageKey) || "{}");
-          store[row.dataset.id] = cb.checked;
-          localStorage.setItem(ckStorageKey, JSON.stringify(store));
-          refreshProgress(card);
-        });
-        // Clicking label row also toggles
-        lbl.addEventListener("click", () => {
-          cb.checked = !cb.checked;
-          cb.dispatchEvent(new Event("change"));
+          const s = JSON.parse(localStorage.getItem(ckKey)||"{}");
+          s[row.dataset.id] = cb.checked;
+          localStorage.setItem(ckKey, JSON.stringify(s));
+          refreshCkProgress(card);
         });
       });
-
-      // Copy unchecked
-      document.getElementById("ck-copy-unchecked").addEventListener("click", function () {
-        const items = [...card.querySelectorAll(".ck-item:not(.done) .ck-label")]
-          .map(l => l.textContent.trim());
-        if (!items.length) return;
-        navigator.clipboard.writeText(items.join(", "));
-        flashBtn(this, "Copied!");
-      });
-
-      // Copy all
-      document.getElementById("ck-copy-all").addEventListener("click", function () {
-        const items = [...card.querySelectorAll(".ck-label")]
-          .map(l => l.textContent.trim());
-        navigator.clipboard.writeText(items.join(", "));
-        flashBtn(this, "Copied!");
-      });
-
-      // Reset
-      document.getElementById("ck-reset").addEventListener("click", function () {
-        card.querySelectorAll(".ck-item").forEach(row => {
-          row.querySelector("input[type='checkbox']").checked = false;
-          row.classList.remove("done");
+      function copy(selector, btnId) {
+        document.getElementById(btnId).addEventListener("click", function() {
+          const items = [...card.querySelectorAll(selector+" .ck-label")].map(l=>l.textContent.trim());
+          navigator.clipboard.writeText(items.join(", "));
+          flash(this, "Copied!");
         });
-        localStorage.removeItem(ckStorageKey);
-        refreshProgress(card);
-        flashBtn(this, "Done");
+      }
+      copy(".ck-item:not(.done)", "ck-copy-unchecked");
+      copy(".ck-item",            "ck-copy-all");
+      document.getElementById("ck-reset").addEventListener("click", function() {
+        card.querySelectorAll(".ck-item").forEach(r => {
+          r.querySelector("input").checked = false;
+          r.classList.remove("done");
+        });
+        localStorage.removeItem(ckKey);
+        refreshCkProgress(card);
+        flash(this, "Done");
       });
     }
 
-    function refreshProgress(card) {
-      const all   = card.querySelectorAll(".ck-item");
-      const done  = card.querySelectorAll(".ck-item.done");
-      const total = all.length;
-      const cnt   = done.length;
-      const pct   = total ? Math.round((cnt / total) * 100) : 0;
-      document.getElementById("ck-progress-text").textContent = `${cnt}/${total} added`;
-      document.getElementById("ck-progress-fill").style.width = `${pct}%`;
-      document.getElementById("ck-progress-pct").textContent  = `${pct}%`;
+    function refreshCkProgress(card) {
+      const all  = card.querySelectorAll(".ck-item");
+      const done = card.querySelectorAll(".ck-item.done");
+      const pct  = all.length ? Math.round(done.length/all.length*100) : 0;
+      document.getElementById("ck-prog-text").textContent = `${done.length}/${all.length} added`;
+      document.getElementById("ck-prog-fill").style.width = `${pct}%`;
+      document.getElementById("ck-prog-pct").textContent  = `${pct}%`;
     }
 
-    function flashBtn(btn, label) {
-      const orig = btn.textContent;
-      btn.textContent = label;
-      setTimeout(() => btn.textContent = orig, 1500);
-    }
-
-    // ────────────────────────────────────────────────────────────────────────
-    // FULL BREAKDOWN CATEGORIES
-    // ────────────────────────────────────────────────────────────────────────
-    function renderCategories(data) {
+    // ── Category breakdown cards ───────────────────────────────────────────
+    function buildCategoryCards(data) {
       const defs = [
-        { key: "roles",            title: "Detected Role",                  dot: "var(--role)",     cls: "tag-role"     },
-        { key: "tech_skills",      title: "Technical Skills",               dot: "var(--tech)",     cls: "tag-tech",    note: "Direct matches + indicator phrases" },
-        { key: "inferred_domains", title: "Inferred Technical Domains",     dot: "var(--inferred)", cls: "tag-inferred",note: "Parsed from responsibility sentences" },
-        { key: "responsibilities", title: "Key Responsibilities",           dot: "var(--resp)",     cls: "resp",        note: "What the role expects you to do" },
-        { key: "amazon_lps",       title: "Amazon Leadership Principles",   dot: "var(--lp)",       cls: "lp",          note: "Detected from JD language — show these in interviews" },
-        { key: "behavioral_traits",title: "Behavioral Traits",              dot: "var(--bt)",       cls: "bt",          note: "General people-skills detected in JD context" },
-        { key: "soft_skills",      title: "Soft Skills",                    dot: "var(--soft)",     cls: "tag-soft",    note: "Direct + contextual soft-skill matches" },
-        { key: "experience",       title: "Experience Requirements",        dot: "var(--exp)",      cls: "tag-exp"      },
-        { key: "education",        title: "Education",                      dot: "var(--edu)",      cls: "tag-edu"      },
-        { key: "other_entities",   title: "Companies / Tools Mentioned",    dot: "var(--other)",    cls: "tag-other"    },
-        { key: "key_phrases",      title: "Key Phrases",                    dot: "var(--phrase)",   cls: "tag-phrase"   },
+        { key:"roles",            title:"Detected Role",               dot:"var(--role)",     cls:"tag-role"     },
+        { key:"tech_skills",      title:"Technical Skills",            dot:"var(--tech)",     cls:"tag-tech",    note:"Direct matches + indicator phrases" },
+        { key:"inferred_domains", title:"Inferred Technical Domains",  dot:"var(--inferred)", cls:"tag-inferred",note:"Parsed from responsibility sentences" },
+        { key:"responsibilities", title:"Key Responsibilities",        dot:"var(--resp)",     cls:"resp",        note:"What the role expects you to do" },
+        { key:"amazon_lps",       title:"Amazon Leadership Principles",dot:"var(--lp)",       cls:"lp",          note:"Detected from JD language — demonstrate these in interviews" },
+        { key:"behavioral_traits",title:"Behavioral Traits",           dot:"var(--bt)",       cls:"bt",          note:"People-skills inferred from sentence context" },
+        { key:"soft_skills",      title:"Soft Skills",                 dot:"var(--soft)",     cls:"tag-soft",    note:"Direct + contextual matches" },
+        { key:"experience",       title:"Experience Requirements",     dot:"var(--exp)",      cls:"tag-exp"      },
+        { key:"education",        title:"Education",                   dot:"var(--edu)",      cls:"tag-edu"      },
+        { key:"other_entities",   title:"Companies / Tools Mentioned", dot:"var(--other)",    cls:"tag-other"    },
+        { key:"key_phrases",      title:"Key Phrases",                 dot:"var(--phrase)",   cls:"tag-phrase"   },
       ];
-
       let kwTotal = 0;
       const cards = [];
-
       for (const def of defs) {
-        const items = data[def.key] || [];
+        const items = data[def.key]||[];
         kwTotal += items.length;
-
         const card = document.createElement("div");
         card.className = "category";
-
-        const note = def.note
-          ? `<div class="category-note">${escHtml(def.note)}</div>`
-          : "";
-
+        const note = def.note ? `<div class="category-note">${escHtml(def.note)}</div>` : "";
         let body;
-        if (items.length === 0) {
-          body = `<p class="empty-cat">None detected</p>`;
-        } else if (def.cls === "resp") {
-          // Responsibilities: line-by-line list
-          body = `<div>${items.map(i =>
-            `<div class="resp-item"><span class="resp-bullet">▶</span><span>${escHtml(i)}</span></div>`
-          ).join("")}</div>`;
-        } else if (def.cls === "lp") {
-          // Amazon LPs: star-badged pills
-          body = `<div class="tags">${items.map(i =>
-            `<span class="lp-badge">${escHtml(i)}</span>`
-          ).join("")}</div>`;
-        } else if (def.cls === "bt") {
-          // Behavioral traits: purple badges
-          body = `<div class="tags">${items.map(i =>
-            `<span class="bt-badge">${escHtml(i)}</span>`
-          ).join("")}</div>`;
-        } else {
-          body = `<div class="tags">${items.map(i =>
-            `<span class="tag ${def.cls}">${escHtml(i)}</span>`
-          ).join("")}</div>`;
-        }
-
+        if (!items.length)       body = `<p class="empty-cat">None detected</p>`;
+        else if (def.cls==="resp") body = `<div>${items.map(i=>`<div class="resp-item"><span class="resp-bullet">▶</span><span>${escHtml(i)}</span></div>`).join("")}</div>`;
+        else if (def.cls==="lp")   body = `<div class="tags">${items.map(i=>`<span class="lp-badge">${escHtml(i)}</span>`).join("")}</div>`;
+        else if (def.cls==="bt")   body = `<div class="tags">${items.map(i=>`<span class="bt-badge">${escHtml(i)}</span>`).join("")}</div>`;
+        else                       body = `<div class="tags">${items.map(i=>`<span class="tag ${def.cls}">${escHtml(i)}</span>`).join("")}</div>`;
         card.innerHTML = `
           <div class="category-header">
             <div class="category-dot" style="background:${def.dot}"></div>
@@ -732,34 +706,187 @@
           </div>${note}${body}`;
         cards.push(card);
       }
-
       return { cards, kwTotal };
     }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // MAIN RENDER
-    // ────────────────────────────────────────────────────────────────────────
-    function renderResults(data) {
-      const checklist = renderChecklist(data);
+    // ════════════════════════════════════════════════════════════════════════
+    // COMPARISON RESULTS
+    // ════════════════════════════════════════════════════════════════════════
+    const COLOR_MAP = {
+      green:  { score:"score-green",  bar:"bar-green",  badge:"rgba(34,197,94,.15)",  badgeText:"#86efac" },
+      blue:   { score:"score-blue",   bar:"bar-blue",   badge:"rgba(91,110,245,.15)", badgeText:"#a5b4fc" },
+      yellow: { score:"score-yellow", bar:"bar-yellow", badge:"rgba(234,179,8,.15)",  badgeText:"#fde047" },
+      red:    { score:"score-red",    bar:"bar-red",    badge:"rgba(239,68,68,.15)",  badgeText:"#fca5a5" },
+    };
+    const SUG_ICON = { critical:"⛔", warning:"⚠️", lp:"★", info:"💡", success:"✅" };
 
-      const divider = document.createElement("div");
-      divider.className = "section-divider";
-      divider.textContent = "Full Breakdown";
+    const CMP_CAT_META = {
+      tech_skills:       { title:"Technical Skills",            color:"var(--tech)" },
+      responsibilities:  { title:"Key Responsibilities",        color:"var(--resp)" },
+      amazon_lps:        { title:"Amazon Leadership Principles",color:"var(--lp)"  },
+      soft_skills:       { title:"Soft Skills",                 color:"var(--soft)" },
+      behavioral_traits: { title:"Behavioral Traits",           color:"var(--bt)"  },
+    };
 
-      const { cards, kwTotal } = renderCategories(data);
+    function showComparisonResults(data) {
+      placeholder.style.display = "none";
+      const { overall_score, grade, grade_color, categories, suggestions, model_used } = data;
+      const cm  = COLOR_MAP[grade_color] || COLOR_MAP.yellow;
+      const pct = overall_score;
 
-      resultsContent.replaceChildren(checklist, divider, ...cards);
+      // ── Score card ────────────────────────────────────────────────────
+      const scoreCard = mkEl("div", { className:"score-card" });
+      scoreCard.innerHTML = `
+        <div class="score-number-wrap">
+          <div class="score-number ${cm.score}">${overall_score}</div>
+          <div class="score-pct-label">% Match</div>
+        </div>
+        <div class="score-right">
+          <div class="score-grade ${cm.score}">${escHtml(grade)}</div>
+          <div class="score-bar-track">
+            <div class="score-bar-fill ${cm.bar}" style="width:${pct}%"></div>
+          </div>
+          <div class="score-model-badge">
+            Powered by <span>${escHtml(model_used)}</span> · runs locally
+          </div>
+        </div>`;
+
+      // ── Suggestions ───────────────────────────────────────────────────
+      const sugCard = mkEl("div", { className:"suggestions-card" });
+      let sugHtml = `<div class="suggestions-title">Actionable Suggestions</div>`;
+      if (suggestions && suggestions.length) {
+        for (const s of suggestions) {
+          const cls  = `sug-${s.type}`;
+          const icon = SUG_ICON[s.type] || "•";
+          sugHtml += `<div class="suggestion ${cls}">
+            <span class="sug-icon">${icon}</span>
+            <span>${escHtml(s.text)}</span>
+          </div>`;
+        }
+      } else {
+        sugHtml += `<div class="suggestion sug-success"><span>✅</span><span>Looking great — strong match overall!</span></div>`;
+      }
+      sugCard.innerHTML = sugHtml;
+
+      // ── Per-category breakdown cards ──────────────────────────────────
+      const catCards = [];
+      for (const [catKey, meta] of Object.entries(CMP_CAT_META)) {
+        const cat = categories[catKey];
+        if (!cat || cat.total === 0) continue;
+
+        const { matched=[], partial=[], missing=[], score=0, total=0 } = cat;
+        const isResp = catKey === "responsibilities";
+
+        let scoreColor;
+        if (score >= 80) scoreColor = "#86efac";
+        else if (score >= 55) scoreColor = "#fde047";
+        else scoreColor = "#fca5a5";
+
+        let groupsHtml = "";
+
+        // Matched
+        if (matched.length) {
+          groupsHtml += `<div class="cmp-group">
+            <div class="cmp-group-label cmp-group-matched">✅ Found in resume (${matched.length})</div>
+            <div class="${isResp ? "" : "cmp-tags"}">
+              ${matched.map(m => isResp
+                ? `<div class="cmp-resp-row cmp-resp-matched"><span class="cmp-resp-label">✅</span><span>${escHtml(m.item)}</span></div>`
+                : `<span class="cmp-tag cmp-tag-matched">${escHtml(m.item)}</span>`
+              ).join("")}
+            </div>
+          </div>`;
+        }
+
+        // Implied — separate high-confidence group
+        const implied  = partial.filter(p => p.match_type === "implied");
+        const nonImplied = partial.filter(p => p.match_type !== "implied");
+
+        if (implied.length) {
+          groupsHtml += `<div class="cmp-group">
+            <div class="cmp-group-label" style="color:#7dd3fc">🔗 Implied by your experience (${implied.length})</div>
+            <div class="${isResp ? "" : "cmp-tags"}">
+              ${implied.map(p => {
+                const hint = p.found_in ? escHtml(p.found_in) : "";
+                return isResp
+                  ? `<div class="cmp-resp-row cmp-resp-implied">
+                       <span class="cmp-resp-label">🔗</span>
+                       <span>${escHtml(p.item)}${hint ? `<span class="cmp-resp-snippet"> — ${hint}</span>` : ""}</span>
+                     </div>`
+                  : `<span class="cmp-tag cmp-tag-implied" title="${hint}">${escHtml(p.item)} <small style="opacity:.75">↩ ${hint || "inferred"}</small></span>`;
+              }).join("")}
+            </div>
+          </div>`;
+        }
+
+        // Semantic / close match
+        if (nonImplied.length) {
+          groupsHtml += `<div class="cmp-group">
+            <div class="cmp-group-label cmp-group-partial">〜 Contextually similar (${nonImplied.length})</div>
+            <div class="${isResp ? "" : "cmp-tags"}">
+              ${nonImplied.map(p => {
+                const tagCls = p.match_type === "close" ? "cmp-tag-close" : "cmp-tag-semantic";
+                const snippet = p.found_in ? `<span class="cmp-tag-snippet">found: "${escHtml(p.found_in)}"</span>` : "";
+                return isResp
+                  ? `<div class="cmp-resp-row cmp-resp-partial">
+                       <span class="cmp-resp-label">〜</span>
+                       <span>${escHtml(p.item)}${p.found_in ? `<span class="cmp-resp-snippet"> — "${escHtml(p.found_in)}"</span>` : ""}</span>
+                     </div>`
+                  : `<span class="cmp-tag ${tagCls}" title="${p.found_in || ''}">${escHtml(p.item)} <small style="opacity:.7">(${p.score})</small></span>`;
+              }).join("")}
+            </div>
+          </div>`;
+        }
+
+        // Missing
+        if (missing.length) {
+          groupsHtml += `<div class="cmp-group">
+            <div class="cmp-group-label cmp-group-missing">✗ Missing from resume (${missing.length})</div>
+            <div class="${isResp ? "" : "cmp-tags"}">
+              ${missing.map(item => isResp
+                ? `<div class="cmp-resp-row cmp-resp-missing"><span class="cmp-resp-label">✗</span><span>${escHtml(item)}</span></div>`
+                : `<span class="cmp-tag cmp-tag-missing">${escHtml(item)}</span>`
+              ).join("")}
+            </div>
+          </div>`;
+        }
+
+        const card = mkEl("div", { className:"cmp-card" });
+        card.innerHTML = `
+          <div class="cmp-card-header">
+            <div class="category-dot" style="background:${meta.color}"></div>
+            <span class="cmp-card-title" style="color:${meta.color}">${meta.title}</span>
+            <span class="cmp-score-badge" style="background:rgba(0,0,0,.2);color:${scoreColor}">
+              ${score}% · ${matched.length+partial.length}/${total}
+            </span>
+          </div>
+          <div class="cmp-bar-track">
+            <div class="cmp-bar-fill" style="width:${score}%;background:${scoreColor}"></div>
+          </div>
+          ${groupsHtml}`;
+        catCards.push(card);
+      }
+
+      const divider = mkEl("div", { className:"section-divider" }, "Category Breakdown");
+      resultsContent.replaceChildren(scoreCard, sugCard, divider, ...catCards);
       resultsContent.style.display = "flex";
-
-      wireChecklist(checklist);
-
-      totalCount.textContent = `${kwTotal} keywords`;
-      copyJsonBtn.style.display = "inline-block";
+      copyJsonBtn.style.display    = "inline-block";
+      totalCount.textContent       = `${overall_score}% match`;
     }
 
+    // ── helpers ────────────────────────────────────────────────────────────
+    function mkEl(tag, props={}, text="") {
+      const el = document.createElement(tag);
+      Object.assign(el, props);
+      if (text) el.textContent = text;
+      return el;
+    }
+    function flash(btn, label) {
+      const orig = btn.textContent;
+      btn.textContent = label;
+      setTimeout(() => btn.textContent = orig, 1500);
+    }
     function escHtml(str) {
-      return String(str)
-        .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+      return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     }
   </script>
 </body>

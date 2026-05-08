@@ -2,6 +2,7 @@ import re
 import spacy
 from spacy.matcher import PhraseMatcher
 from collections import Counter
+from normalizer import canonicalize, normalize_list, strip_version, wcontains
 
 # ---------------------------------------------------------------------------
 # Curated direct-match vocabulary
@@ -11,6 +12,11 @@ TECH_SKILLS = [
     # Languages
     "Python", "JavaScript", "TypeScript", "Java", "C", "C++", "C#", "Go",
     "Golang", "Rust", "Ruby", "PHP", "Swift", "Kotlin", "Scala", "R", "MATLAB",
+    # Alternate / informal spellings (canonicalized on output)
+    "NodeJS", "Node JS", "ReactJS", "React JS", "VueJS", "Vue JS",
+    "NextJS", "Next JS", "AngularJS", "Angular JS",
+    "CICD", "CI CD",  # slash variant already in list below
+    "Golang",  # covered above; duplicate is harmless
     "Perl", "Bash", "Shell", "PowerShell", "Groovy", "Elixir", "Haskell",
     "Clojure", "F#", "Dart", "Lua", "Julia",
     # Web
@@ -587,10 +593,23 @@ def _build_phrase_matcher(nlp, phrases):
 
 
 def _deduplicate(items):
+    """
+    Remove genuine duplicates and strict substrings.
+    Does NOT drop shorter items that are distinct skills (e.g. "SQL" vs "MS SQL Server").
+    Rule: drop item X only if some kept item Y is STRICTLY LONGER and X is a
+    substring of Y *and* X has fewer than 6 characters (very short generic tokens).
+    """
     items = sorted(set(items), key=len, reverse=True)
     result = []
     for item in items:
-        if not any(item.lower() in kept.lower() for kept in result):
+        il = item.lower()
+        dominated = False
+        for kept in result:
+            kl = kept.lower()
+            if il in kl and len(il) < 6 and len(kl) > len(il):
+                dominated = True
+                break
+        if not dominated:
             result.append(item)
     return sorted(result, key=str.lower)
 
@@ -616,7 +635,10 @@ def _extract_from_skill_indicators(text: str, known_tech_lower: set) -> list[str
     Extract tech skills from sentences like:
       'experience with Python and React'
       'proficient in distributed systems'
-    Returns a list of canonical tech names (if matched) or cleaned noun phrases.
+
+    Bug-fix: lazy lookahead in the regex stops at "." which is inside terms
+    like "Node.js" or "React.js". After capturing, we extend the raw string
+    through any immediately following ".word+" suffix.
     """
     tech_lookup = {s.lower(): s for s in TECH_SKILLS}
     found = {}
@@ -624,21 +646,31 @@ def _extract_from_skill_indicators(text: str, known_tech_lower: set) -> list[str
     for pattern in SKILL_INDICATORS:
         for m in re.finditer(pattern, text, re.IGNORECASE):
             raw = m.group(1).strip().rstrip(".,; ")
+
+            # Extend through dotted suffix if the regex stopped at "." mid-term
+            # e.g. "Node" → extend to "Node.js"  |  "Python 3" → "Python 3.9"
+            end_pos = m.end(1)
+            if end_pos < len(text):
+                ext = re.match(r'\.\w+', text[end_pos:])
+                if ext:
+                    raw = raw + ext.group(0)
+
             # Split comma-separated lists: "Python, React, Node.js"
             parts = re.split(r",\s*", raw)
             for part in parts:
                 part = part.strip().rstrip(".,; ")
                 if not part or len(part) < 2 or len(part.split()) > 5:
                     continue
-                lower = part.lower()
-                # Match against known tech (canonical casing)
+
+                # Strip version and canonicalize
+                canon = canonicalize(part)
+                lower = canon.lower()
+
                 if lower in tech_lookup:
-                    canonical = tech_lookup[lower]
-                    found[lower] = canonical
-                elif lower not in known_tech_lower:
-                    # Keep short multi-word domain phrases not already captured
-                    if len(part.split()) >= 2:
-                        found[lower] = part.title() if part.islower() else part
+                    found[lower] = tech_lookup[lower]
+                elif canon.lower() not in known_tech_lower:
+                    if len(canon.split()) >= 2:
+                        found[lower] = canon
 
     return list(found.values())
 
@@ -772,7 +804,9 @@ def extract(text: str) -> dict:
     tech_found = {}
     for _, start, end in tech_matcher(doc):
         span_text = doc[start:end].text
-        canonical = next((s for s in TECH_SKILLS if s.lower() == span_text.lower()), span_text)
+        raw_canon = next((s for s in TECH_SKILLS if s.lower() == span_text.lower()), span_text)
+        # Normalize alternate spellings to canonical form (NodeJS → Node.js, etc.)
+        canonical = canonicalize(raw_canon)
         tech_found[canonical.lower()] = canonical
     direct_tech = set(tech_found.values())
 
@@ -856,10 +890,12 @@ def extract(text: str) -> dict:
 
         lower = raw.lower()
         if lower in full_tech_lookup:
-            # Promote to tech_skills with canonical casing
-            canonical = full_tech_lookup[lower]
-            if lower not in tech_found:
-                tech_found[lower] = canonical
+            # Promote to tech_skills with canonical casing, then normalize
+            raw_canon = full_tech_lookup[lower]
+            canonical = canonicalize(raw_canon)
+            canon_lower = canonical.lower()
+            if canon_lower not in tech_found:
+                tech_found[canon_lower] = canonical
         else:
             ner_tools.append(raw)
 
