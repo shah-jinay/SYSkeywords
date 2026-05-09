@@ -83,6 +83,30 @@
                      color: #a5b4fc; display: none; }
     .resume-notice.show { display: block; }
 
+    .resume-mode-toggle { display: flex; gap: 0.35rem; margin-bottom: 0.5rem; }
+    .mode-btn { font-size: 0.72rem; padding: 0.25rem 0.7rem; border-radius: 6px;
+                border: 1px solid var(--border); background: var(--surface2);
+                color: var(--muted); cursor: pointer; transition: all 0.15s; }
+    .mode-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .library-list { display: none; flex-direction: column; gap: 0.4rem;
+                    max-height: 220px; overflow-y: auto; }
+    .library-list.open { display: flex; }
+    .library-item { display: flex; align-items: center; justify-content: space-between;
+                    padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--border);
+                    background: var(--surface2); cursor: pointer; transition: border-color 0.15s; }
+    .library-item:hover { border-color: var(--accent); }
+    .library-item .lib-name { font-size: 0.82rem; color: var(--text); font-weight: 500; }
+    .library-item .lib-count { font-size: 0.72rem; color: var(--muted); }
+    .library-item .lib-badge { font-size: 0.68rem; padding: 0.15rem 0.45rem; border-radius: 10px;
+                               background: rgba(91,110,245,0.15); color: #a5b4fc; font-weight: 600; }
+    .library-item.suggested  { border-color: var(--accent); }
+    .library-item.selected   { border-color: #34d399; background: rgba(52,211,153,0.07); }
+    .resume-suggest { font-size: 0.78rem; padding: 0.45rem 0.75rem; border-radius: 7px;
+                      background: rgba(91,110,245,0.1); border: 1px solid rgba(91,110,245,0.25);
+                      color: #a5b4fc; display: none; cursor: pointer; transition: background 0.15s; }
+    .resume-suggest:hover { background: rgba(91,110,245,0.18); }
+    .resume-suggest span   { color: #fff; font-weight: 600; }
+
     /* ── RIGHT PANEL ─────────────────────────────────────────────────────── */
     .right-panel { padding: 1.25rem; overflow-y: auto;
                    display: flex; flex-direction: column; gap: 0.9rem; }
@@ -280,6 +304,25 @@
     .cmp-resp-label { flex-shrink: 0; font-size: 0.7rem; margin-top: 0.15rem; }
     .cmp-resp-snippet { font-size: 0.68rem; color: var(--muted); font-style: italic; }
 
+    /* ── TAILOR SECTION ─────────────────────────────────────────────────── */
+    .tailor-section { border-top: 1px solid var(--border); padding-top: 0.65rem;
+                      flex-direction: column; gap: 0.4rem; }
+    .tailor-label { font-size: 0.72rem; font-weight: 600; color: var(--muted);
+                    text-transform: uppercase; letter-spacing: 0.08em; }
+    .tailor-row { display: flex; gap: 0.55rem; }
+    .role-select { flex: 1; min-width: 0; background: var(--surface2);
+                   border: 1px solid var(--border); color: var(--text);
+                   border-radius: 8px; padding: 0.62rem 0.75rem;
+                   font-size: 0.84rem; cursor: pointer; outline: none;
+                   transition: border-color 0.2s; }
+    .role-select:focus { border-color: var(--accent); }
+    .role-select option { background: var(--surface2); }
+    .btn-tailor { flex: 0 0 auto; background: linear-gradient(135deg, #059669, #10b981); }
+    .btn-tailor:disabled { opacity: 0.4; cursor: not-allowed; }
+    .tailor-status { font-size: 0.73rem; min-height: 1.1em; color: var(--muted); }
+    .tailor-status.ok  { color: #86efac; }
+    .tailor-status.err { color: #fca5a5; }
+
     @media (max-width: 768px) {
       main { grid-template-columns: 1fr; height: auto; }
       .left-panel { height: 55vh; }
@@ -311,7 +354,7 @@
       <div class="input-section" id="jd-section">
         <label for="jd-input">Paste Job Description</label>
         <textarea id="jd-input" placeholder="Paste any job description here and press Extract Keywords…" spellcheck="false"></textarea>
-        <div class="char-count" id="jd-char-count">0 / 20,000</div>
+        <div class="char-count" id="jd-char-count">0 chars</div>
         <div class="actions">
           <button class="btn-primary" id="extract-btn">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -322,16 +365,45 @@
           </button>
           <button class="btn-secondary" id="clear-jd-btn">Clear</button>
         </div>
+
+        <!-- ── Generate Tailored Resume (visible after extraction) ── -->
+        <div class="tailor-section" id="tailor-section" style="display:none">
+          <div class="tailor-label">Generate Tailored Resume</div>
+          <div class="tailor-row">
+            <select id="role-select" class="role-select" title="Prioritise bullets from a specific role resume">
+              <option value="">All sources</option>
+            </select>
+            <button class="btn-primary btn-tailor" id="tailor-btn" disabled>
+              ↓ Get PDF
+              <div class="spinner" id="tailor-spinner"></div>
+            </button>
+          </div>
+          <div class="tailor-status" id="tailor-status"></div>
+        </div>
       </div>
 
       <!-- Resume section (hidden until JD extracted) -->
       <div class="input-section" id="resume-section" style="display:none">
-        <label for="resume-input">Paste Resume</label>
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.35rem;">
+          <label style="margin:0" for="resume-input">Resume</label>
+          <div class="resume-mode-toggle">
+            <button class="mode-btn" id="mode-paste-btn">Paste Text</button>
+            <button class="mode-btn active" id="mode-library-btn">My Resumes</button>
+          </div>
+        </div>
         <div class="resume-notice show" id="resume-notice">
           Extract the JD first — then paste your resume here to compare.
         </div>
-        <textarea id="resume-input" placeholder="Paste your full resume text here…" spellcheck="false"></textarea>
-        <div class="char-count" id="resume-char-count">0 / 20,000</div>
+        <div class="resume-suggest" id="resume-suggest"></div>
+        <!-- Paste mode -->
+        <textarea id="resume-input" placeholder="Paste your full resume text here…" spellcheck="false" style="display:none"></textarea>
+        <div class="char-count" id="resume-char-count" style="display:none">0 chars</div>
+        <!-- Library mode -->
+        <div class="library-list open" id="library-list">
+          <div style="font-size:0.75rem; color:var(--muted); padding:0.2rem 0;">
+            Click a resume to load it for analysis.
+          </div>
+        </div>
         <div class="actions">
           <button class="btn-primary btn-compare" id="compare-btn" disabled>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -351,6 +423,7 @@
         <h2 id="panel-title">Results</h2>
         <div class="panel-header-right">
           <span class="total-count" id="total-count"></span>
+          <button class="btn-sm" id="copy-report-btn" style="display:none">Copy Report</button>
           <button class="btn-sm" id="copy-json-btn">Copy JSON</button>
         </div>
       </div>
@@ -380,6 +453,7 @@
     const clearJdBtn     = document.getElementById("clear-jd-btn");
     const clearResumeBtn = document.getElementById("clear-resume-btn");
     const copyJsonBtn    = document.getElementById("copy-json-btn");
+    const copyReportBtn  = document.getElementById("copy-report-btn");
     const jdCharCount    = document.getElementById("jd-char-count");
     const resumeCharCount= document.getElementById("resume-char-count");
     const placeholder    = document.getElementById("placeholder");
@@ -390,6 +464,136 @@
     const tabLock        = document.getElementById("tab-lock");
     const extractSpinner = document.getElementById("extract-spinner");
     const compareSpinner = document.getElementById("compare-spinner");
+    const tailorSection  = document.getElementById("tailor-section");
+    const tailorBtn      = document.getElementById("tailor-btn");
+    const tailorSpinner  = document.getElementById("tailor-spinner");
+    const tailorStatus   = document.getElementById("tailor-status");
+    const roleSelect     = document.getElementById("role-select");
+    const modePasteBtn   = document.getElementById("mode-paste-btn");
+    const modeLibraryBtn = document.getElementById("mode-library-btn");
+    const libraryList    = document.getElementById("library-list");
+
+    // ── resume mode toggle (Paste Text / My Resumes) ──────────────────────
+    let resumeMode = "library"; // "paste" | "library"
+
+    function setResumeMode(mode) {
+      resumeMode = mode;
+      modePasteBtn.classList.toggle("active", mode === "paste");
+      modeLibraryBtn.classList.toggle("active", mode === "library");
+      resumeInput.style.display  = mode === "paste"   ? "" : "none";
+      document.getElementById("resume-char-count").style.display = mode === "paste" ? "" : "none";
+      libraryList.classList.toggle("open", mode === "library");
+      if (mode === "library") loadLibrarySources();
+      compareBtn.disabled = !lastJdData || resumeInput.value.trim().length < 10;
+    }
+
+    modePasteBtn.addEventListener("click",   () => setResumeMode("paste"));
+    modeLibraryBtn.addEventListener("click", () => setResumeMode("library"));
+
+    let libSourcesLoaded = false;
+    let libSuggestions   = [];  // [{source, pct}, ...] from /api/suggest-resume
+    const libCardMap     = {};  // source → card element
+
+    async function loadLibrarySources() {
+      if (libSourcesLoaded) return;
+      libSourcesLoaded = true;
+      try {
+        const res  = await fetch("/api/resume-sources");
+        const data = await res.json();
+        libraryList.innerHTML = "";
+        if (!data.sources || data.sources.length === 0) {
+          libraryList.innerHTML = '<div style="font-size:0.78rem;color:var(--muted);">No ingested resumes found.</div>';
+          return;
+        }
+        for (const s of data.sources) {
+          const card = document.createElement("div");
+          card.className = "library-item";
+          card.dataset.source = s.source;
+          card.innerHTML = `<span class="lib-name">${s.source.charAt(0).toUpperCase() + s.source.slice(1)}</span>`
+                         + `<span class="lib-count">${s.count} bullets</span>`;
+          card.addEventListener("click", () => selectLibraryResume(s.source, card));
+          libraryList.appendChild(card);
+          libCardMap[s.source] = card;
+        }
+        // Apply any suggestions that arrived before cards were built
+        if (libSuggestions.length) applyScoresToCards(libSuggestions);
+      } catch (_) {
+        libraryList.innerHTML = '<div style="font-size:0.78rem;color:var(--muted);">Could not load resumes.</div>';
+      }
+    }
+
+    let activeLibCard = null;
+    async function selectLibraryResume(source, card) {
+      if (activeLibCard) activeLibCard.classList.remove("selected");
+      activeLibCard = card;
+      card.classList.add("selected");
+      try {
+        const res  = await fetch(`/api/resume-text/${encodeURIComponent(source)}`);
+        const data = await res.json();
+        if (data.error) { alert(data.error); return; }
+        resumeInput.value = data.text;
+        const n = data.text.length;
+        document.getElementById("resume-char-count").textContent = `${n.toLocaleString()} chars`;
+        compareBtn.disabled = !lastJdData || n < 10;
+      } catch (_) {
+        alert("Failed to load resume text.");
+      }
+    }
+
+    // ── resume suggestion (called after JD extraction) ─────────────────────
+    const resumeSuggest = document.getElementById("resume-suggest");
+
+    async function fetchResumeSuggestions(jd_data) {
+      resumeSuggest.style.display = "none";
+      try {
+        const res  = await fetch("/api/suggest-resume", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jd_data }),
+        });
+        const data = await res.json();
+        if (!data.suggestions || data.suggestions.length === 0) return;
+        libSuggestions = data.suggestions;
+        const best = data.suggestions[0];
+        const label = best.source.charAt(0).toUpperCase() + best.source.slice(1);
+        resumeSuggest.innerHTML =
+          `Best match for this JD: <span>${label} Resume</span> (${best.pct}% relevance) — `
+          + `<u style="cursor:pointer">load it</u>`;
+        resumeSuggest.style.display = "block";
+        resumeSuggest.onclick = () => {
+          setResumeMode("library");
+          loadLibrarySources().then(() => {
+            const card = libCardMap[best.source];
+            if (card) selectLibraryResume(best.source, card);
+          });
+        };
+        // If library is already open, update scores on cards
+        if (libSourcesLoaded) applyScoresToCards(data.suggestions);
+      } catch (_) { /* silent — suggestions are non-critical */ }
+    }
+
+    function applyScoresToCards(suggestions) {
+      // Remove any old badges first
+      for (const card of Object.values(libCardMap)) {
+        card.classList.remove("suggested");
+        const old = card.querySelector(".lib-badge");
+        if (old) old.remove();
+      }
+      suggestions.forEach((s, idx) => {
+        const card = libCardMap[s.source];
+        if (!card) return;
+        const badge = document.createElement("span");
+        badge.className = "lib-badge";
+        badge.textContent = `${s.pct}% match`;
+        card.appendChild(badge);
+        if (idx === 0) card.classList.add("suggested");
+      });
+      // Re-sort cards by score
+      suggestions.forEach(s => {
+        const card = libCardMap[s.source];
+        if (card) libraryList.appendChild(card); // move to bottom preserves order
+      });
+    }
 
     // ── tab switching ──────────────────────────────────────────────────────
     document.getElementById("tab-jd-btn").addEventListener("click",     () => switchTab("jd"));
@@ -403,6 +607,7 @@
       document.getElementById("resume-section").style.display = tab === "resume" ? "flex" : "none";
 
       if (tab === "resume") {
+        if (resumeMode === "library") loadLibrarySources();
         if (lastJdData) {
           resumeNotice.classList.remove("show");
           compareBtn.disabled = resumeInput.value.trim().length < 10;
@@ -422,33 +627,54 @@
       }
     }
 
+    // ── load available role sources on page load ──────────────────────────
+    (async () => {
+      try {
+        const res = await fetch("/api/sources");
+        const { sources } = await res.json();
+        if (sources && sources.length) {
+          for (const s of sources) {
+            const opt = document.createElement("option");
+            opt.value = s;
+            opt.textContent = s.charAt(0).toUpperCase() + s.slice(1);
+            roleSelect.appendChild(opt);
+          }
+        }
+      } catch (_) { /* DB not ready yet — dropdown stays as "All sources" */ }
+    })();
+
     // ── char counters ──────────────────────────────────────────────────────
     jdInput.addEventListener("input", () => {
       const n = jdInput.value.length;
-      jdCharCount.textContent = `${n.toLocaleString()} / 20,000`;
-      jdCharCount.style.color = n > 18000 ? "#f87171" : "var(--muted)";
+      jdCharCount.textContent = `${n.toLocaleString()} chars`;
     });
     resumeInput.addEventListener("input", () => {
       const n = resumeInput.value.length;
-      resumeCharCount.textContent = `${n.toLocaleString()} / 20,000`;
-      resumeCharCount.style.color = n > 18000 ? "#f87171" : "var(--muted)";
+      resumeCharCount.textContent = `${n.toLocaleString()} chars`;
       compareBtn.disabled = !lastJdData || n < 10;
     });
 
     // ── clear buttons ──────────────────────────────────────────────────────
     clearJdBtn.addEventListener("click", () => {
       jdInput.value = "";
-      jdCharCount.textContent = "0 / 20,000";
+      jdCharCount.textContent = "0 chars";
       lastJdData = null;
       tabLock.textContent = "🔒";
       compareBtn.disabled = true;
+      tailorSection.style.display = "none";
+      tailorBtn.disabled = true;
+      tailorStatus.textContent = "";
+      tailorStatus.className = "tailor-status";
+      resumeSuggest.style.display = "none";
+      libSuggestions = [];
       resetResults();
     });
     clearResumeBtn.addEventListener("click", () => {
       resumeInput.value = "";
-      resumeCharCount.textContent = "0 / 20,000";
+      resumeCharCount.textContent = "0 chars";
       lastCompData = null;
       compareBtn.disabled = true;
+      if (activeLibCard) { activeLibCard.style.borderColor = ""; activeLibCard = null; }
       if (activeTab === "resume") resetResults();
     });
 
@@ -456,7 +682,8 @@
       placeholder.style.display = "flex";
       resultsContent.style.display = "none";
       resultsContent.innerHTML = "";
-      copyJsonBtn.style.display = "none";
+      copyJsonBtn.style.display   = "none";
+      copyReportBtn.style.display = "none";
       totalCount.textContent = "";
     }
 
@@ -468,6 +695,133 @@
       copyJsonBtn.textContent = "Copied!";
       setTimeout(() => copyJsonBtn.textContent = "Copy JSON", 1500);
     });
+
+    // ── copy plain-text report ──────────────────────────────────────────────
+    copyReportBtn.addEventListener("click", () => {
+      const text = activeTab === "resume"
+        ? buildCompReport(lastCompData)
+        : buildJdReport(lastJdData);
+      if (!text) return;
+      navigator.clipboard.writeText(text);
+      copyReportBtn.textContent = "Copied!";
+      setTimeout(() => copyReportBtn.textContent = "Copy Report", 1500);
+    });
+
+    function buildJdReport(d) {
+      if (!d) return "";
+      const bar  = "═".repeat(50);
+      const thin = "─".repeat(50);
+      const lines = [bar, "  JOB DESCRIPTION EXTRACTION REPORT", bar, ""];
+
+      const section = (title, items, fmt) => {
+        if (!items || !items.length) return;
+        lines.push(`${title} (${items.length})`);
+        items.forEach(i => lines.push(fmt(i)));
+        lines.push("");
+      };
+
+      if (d.roles && d.roles.length)
+        section("ROLE(S)", d.roles, r => `  ${r}`);
+
+      section("TECHNICAL SKILLS",    d.tech_skills,      s => `  ${s}`);
+      section("INFERRED DOMAINS",    d.inferred_domains, s => `  ${s}`);
+
+      if (d.responsibilities && d.responsibilities.length) {
+        lines.push(`KEY RESPONSIBILITIES (${d.responsibilities.length})`);
+        d.responsibilities.forEach(r => lines.push(`  · ${r}`));
+        lines.push("");
+      }
+
+      section("SOFT SKILLS",          d.soft_skills,       s => `  ${s}`);
+      section("AMAZON LEADERSHIP PRS", d.amazon_lps,       s => `  ★ ${s}`);
+      section("BEHAVIORAL TRAITS",    d.behavioral_traits, s => `  ${s}`);
+      section("EXPERIENCE",           d.experience,        s => `  ${s}`);
+      section("EDUCATION",            d.education,         s => `  ${s}`);
+
+      if (d.key_phrases && d.key_phrases.length) {
+        lines.push("KEY PHRASES");
+        lines.push("  " + d.key_phrases.join(", "));
+        lines.push("");
+      }
+
+      lines.push(bar);
+      return lines.join("\n");
+    }
+
+    function buildCompReport(d) {
+      if (!d) return "";
+      const bar  = "═".repeat(50);
+      const thin = "─".repeat(50);
+      const typeIcon = { exact:"✅", implied:"🔗", close:"≈ ", semantic:"≈ ", missing:"✗ " };
+      const sugIcon  = { critical:"⛔", warning:"⚠️ ", lp:"★ ", info:"💡", success:"✅" };
+      const lines = [bar, "  RESUME ANALYSIS REPORT", bar, ""];
+
+      lines.push(`OVERALL SCORE: ${d.overall_score}%  —  ${d.grade}`);
+      lines.push("");
+
+      if (d.suggestions && d.suggestions.length) {
+        lines.push("SUGGESTIONS");
+        lines.push(thin);
+        d.suggestions.forEach(s =>
+          lines.push(`  ${sugIcon[s.type] || "·"} ${s.text}`)
+        );
+        lines.push("");
+      }
+
+      const catLabel = {
+        tech_skills:       "TECHNICAL SKILLS",
+        responsibilities:  "KEY RESPONSIBILITIES",
+        amazon_lps:        "AMAZON LEADERSHIP PRINCIPLES",
+        soft_skills:       "SOFT SKILLS",
+        behavioral_traits: "BEHAVIORAL TRAITS",
+      };
+
+      for (const [key, label] of Object.entries(catLabel)) {
+        const cat = d.categories?.[key];
+        if (!cat) continue;
+        const total   = cat.total || 0;
+        const matched = cat.matched || [];
+        const partial = cat.partial || [];
+        const missing = cat.missing || [];
+        const hits    = matched.length + partial.length;
+        lines.push(`${thin}`);
+        lines.push(`${label}  —  ${cat.score}%  ·  ${hits}/${total} matched`);
+        lines.push("");
+
+        const renderItem = (item, icon) => {
+          const found = item.found_in ? `  →  "${item.found_in}"` : "";
+          lines.push(`    ${icon} ${item.item}${found}`);
+        };
+
+        const byType = {};
+        for (const item of matched) {
+          const t = item.match_type || "exact";
+          (byType[t] = byType[t] || []).push(item);
+        }
+        for (const item of partial) {
+          const t = item.match_type || "close";
+          (byType[t] = byType[t] || []).push(item);
+        }
+
+        if (byType.exact  && byType.exact.length)
+          byType.exact.forEach(i => renderItem(i, "✅ MATCHED "));
+        if (byType.implied && byType.implied.length)
+          byType.implied.forEach(i => renderItem(i, "🔗 IMPLIED "));
+        if (byType.close   && byType.close.length)
+          byType.close.forEach(i => renderItem(i, "≈  SIMILAR "));
+        if (byType.semantic && byType.semantic.length)
+          byType.semantic.forEach(i => renderItem(i, "≈  SIMILAR "));
+
+        if (missing.length) {
+          lines.push("");
+          missing.forEach(i => lines.push(`    ✗  MISSING   ${i.item}`));
+        }
+        lines.push("");
+      }
+
+      lines.push(bar);
+      return lines.join("\n");
+    }
 
     // ── extract ────────────────────────────────────────────────────────────
     extractBtn.addEventListener("click", async () => {
@@ -485,6 +839,11 @@
         tabLock.textContent = "✓";
         panelTitle.textContent = "Extraction Results";
         showExtractionResults(data);
+        tailorSection.style.display = "flex";
+        tailorBtn.disabled = false;
+        tailorStatus.textContent = "";
+        tailorStatus.className = "tailor-status";
+        fetchResumeSuggestions(data);
       } catch (e) {
         showError(e.message);
       } finally {
@@ -527,6 +886,45 @@
     jdInput.addEventListener("keydown",     e => { if (e.key==="Enter"&&(e.ctrlKey||e.metaKey)) extractBtn.click(); });
     resumeInput.addEventListener("keydown", e => { if (e.key==="Enter"&&(e.ctrlKey||e.metaKey)) compareBtn.click(); });
 
+    // ── tailor ─────────────────────────────────────────────────────────────
+    tailorBtn.addEventListener("click", async () => {
+      const jdText = jdInput.value.trim();
+      if (!jdText || !lastJdData) return;
+      tailorBtn.disabled = true;
+      tailorSpinner.style.display = "block";
+      tailorStatus.textContent = "Matching bullets and generating PDF…";
+      tailorStatus.className = "tailor-status";
+      try {
+        const res = await fetch("/tailor", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jd_text: jdText, role: roleSelect.value })
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ error: "Generation failed" }));
+          throw new Error(err.error || "Generation failed");
+        }
+        const blob     = await res.blob();
+        const url      = URL.createObjectURL(blob);
+        const a        = document.createElement("a");
+        const roleName = roleSelect.value || "tailored";
+        a.href         = url;
+        a.download     = `resume_${roleName}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 5000);
+        tailorStatus.textContent = "✓ PDF downloaded";
+        tailorStatus.className   = "tailor-status ok";
+      } catch (e) {
+        tailorStatus.textContent = "✗ " + e.message;
+        tailorStatus.className   = "tailor-status err";
+      } finally {
+        tailorBtn.disabled = false;
+        tailorSpinner.style.display = "none";
+      }
+    });
+
     function showError(msg) {
       placeholder.style.display = "none";
       resultsContent.innerHTML  = `<div class="error-box">${escHtml(msg)}</div>`;
@@ -544,8 +942,9 @@
       resultsContent.replaceChildren(checklist, divider, ...cards);
       resultsContent.style.display = "flex";
       wireChecklist(checklist, data);
-      totalCount.textContent    = `${kwTotal} keywords`;
-      copyJsonBtn.style.display = "inline-block";
+      totalCount.textContent      = `${kwTotal} keywords`;
+      copyJsonBtn.style.display   = "inline-block";
+      copyReportBtn.style.display = "inline-block";
     }
 
     // ── Checklist ──────────────────────────────────────────────────────────
@@ -868,9 +1267,10 @@
 
       const divider = mkEl("div", { className:"section-divider" }, "Category Breakdown");
       resultsContent.replaceChildren(scoreCard, sugCard, divider, ...catCards);
-      resultsContent.style.display = "flex";
-      copyJsonBtn.style.display    = "inline-block";
-      totalCount.textContent       = `${overall_score}% match`;
+      resultsContent.style.display  = "flex";
+      copyJsonBtn.style.display     = "inline-block";
+      copyReportBtn.style.display   = "inline-block";
+      totalCount.textContent        = `${overall_score}% match`;
     }
 
     // ── helpers ────────────────────────────────────────────────────────────

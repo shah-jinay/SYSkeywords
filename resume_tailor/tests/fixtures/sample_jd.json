@@ -1,0 +1,4 @@
+{
+  "jd_text": "We are hiring a Senior Backend Engineer to build and scale distributed microservices on AWS. You will design high-throughput Kafka pipelines, manage PostgreSQL databases, and deploy services on Kubernetes. Required: Python, Go, CI/CD, Docker, Terraform. Nice to have: Redis, gRPC, Datadog, OpenTelemetry.",
+  "role": "Backend Engineer"
+}

@@ -1,0 +1,50 @@
+Jinay Shah
+ (203) 512-6561 | shah.jinay1999@gmail.com  | linkedin.com/in/jinay24/ | github.com/shah-jinay
+
+PROFESSIONAL SUMMARY
+
+Data Analyst with 3+ years of experience using SQL, Python, Tableau, Power BI, Excel, and ETL workflows to transform complex data into dashboards, forecasts, experiments, and decision-ready insights. Strong in KPI design, ad hoc analysis, reporting automation, data validation, segmentation, anomaly detection, and stakeholder-facing analytics. Delivered analytics that improved prediction accuracy by 40%, reduced dashboard latency by 50%, lowered error propagation by 15%, increased login success by 10%, and improved retention by 25%.
+
+TECHNICAL SKILLS
+
+Analytics: SQL, Python, Pandas, NumPy, exploratory data analysis, statistical analysis, hypothesis testing, A/B testing, forecasting, anomaly detection, segmentation, cohort analysis, KPI development
+BI & Visualization: Tableau, Power BI, Metabase, Plotly, Excel
+Data Management: ETL pipelines, data cleaning, data validation, data modeling, reporting automation, ad hoc analysis
+Databases & Cloud: PostgreSQL, MySQL, BigQuery, Redshift, AWS S3, AWS RDS, GCP Cloud Storage
+Tools: Jupyter, Git, Docker, Airflow, REST APIs
+Methods: Dashboard design, stakeholder collaboration, requirements translation, metric reporting, process improvement
+PROFESSIONAL EXPERIENCE
+
+ASU Decision Theater - Data Analyst | Tempe, AZ | 06/2024 - Present
+•	Built time-series forecasting models using Prophet and ARIMA for regional water scarcity analysis, improving prediction accuracy by 40% and supporting scenario planning for 2,000+ stakeholders.
+•	Unified policy, investment, and environmental datasets through reusable ETL pipelines, improving data consistency and enabling cross-domain analysis across analytics applications.
+•	Delivered real-time data services for CuRVE and Minerva dashboards, cutting latency by 50% and improving access to timely decision-support insights.
+•	Implemented anomaly detection and validation checks across simulation pipelines, reducing error propagation by 15% and increasing confidence in reported outputs.
+•	Created test-data and pre-release validation workflows to catch reporting issues earlier, improving analytics reliability and accelerating rollout of new reporting capabilities.
+
+KiVee Softech - Data Analyst | Surat, India | 01/2022 - 07/2023
+•	Analyzed voice authentication performance across noisy audio conditions, identifying failure patterns that reduced false rejection rates by 20% and improved verification reliability.
+•	Built monitoring workflows for drift, lockouts, and authentication quality, surfacing model degradation earlier and lowering user lockouts by 15%.
+•	Evaluated fallback and partial-match authentication flows through KPI-driven analysis, increasing login success rates by 10% and improving user experience.
+•	Supported scalable reporting and operational monitoring by deploying repeatable analytics pipelines on AWS.
+
+Kintu Designs - Data Analyst | Surat, India | 02/2021 - 01/2022
+•	Built recommendation analytics and behavioral clustering workflows for a 100K+ user base, increasing engagement by 40% and improving conversion for health-focused plans by 28%.
+•	Ran A/B tests across recommendation variants, identifying higher-performing experiences that increased retention by 25%.
+•	Performed segmentation analysis on support and product usage patterns, reducing support overhead by 25% and cutting resolution time by 60%.
+•	Generated insight-driven reporting on customer behavior trends to support product and engagement decisions.
+
+TECHNICAL PROJECTS
+
+Retail Demand Forecasting and Inventory Risk Analytics | 01/2026 - Present
+•	Built an end-to-end retail analytics pipeline using SQL, Python, Pandas, and Tableau/Power BI to forecast item-store demand and support inventory planning decisions.
+•	Engineered features from historical sales, promotions, calendar trends, and seasonality signals to improve forecast reliability and surface stockout and overstock risks.
+
+Customer Retention, CLV, and Experimentation Analytics | 05/2025 - 01/2026
+•	Built a customer analytics solution using SQL, Python, and Tableau/Power BI to identify churn risk, segment users by value, and prioritize retention opportunities.
+•	Combined churn indicators, customer behavior patterns, and revenue features to create a customer lifetime value and revenue-at-risk view for retention analysis.
+
+EDUCATION
+
+Arizona State University - Master of Science, Information Technology | Tempe, AZ | 08/2023 - 05/2025 
+Uka Tarsadia University - Bachelor of Engineering, Computer Engineering | Bardoli, India | 07/2018 - 05/2021

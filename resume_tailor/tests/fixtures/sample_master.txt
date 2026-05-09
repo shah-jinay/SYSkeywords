@@ -1,0 +1,37 @@
+John Doe
+john@example.com | github.com/johndoe | Remote
+
+SUMMARY
+5-year backend engineer specializing in distributed systems and Python services. Reduced API p95 latency 4x at a 2M-user platform by introducing Redis caching. Known for shipping production-grade infrastructure solo.
+
+SKILLS
+Languages:         Python, Go, JavaScript, SQL
+Frameworks:        FastAPI, Flask, Django, gRPC
+Infrastructure:    AWS, Docker, Kubernetes, Terraform
+Databases:         PostgreSQL, Redis, MongoDB, DynamoDB
+CI/CD:             GitHub Actions, Jenkins, CircleCI
+Observability:     Prometheus, Grafana, Datadog, OpenTelemetry
+
+EXPERIENCE
+
+Acme Corp · Senior Software Engineer · Jan 2022 to Present · Remote
+· Engineered FastAPI microservices on AWS ECS, handling 3M daily requests at 99.9% uptime.
+· Reduced PostgreSQL query latency 60% by redesigning indexes and adding Redis caching layer.
+· Automated CI/CD pipeline with GitHub Actions and Terraform, cutting release cycle from 2 days to 3 hours.
+· Mentored 4 junior engineers through weekly code reviews and pair-programming sessions.
+· Instrumented Prometheus and Grafana dashboards, reducing MTTR from 4 hours to 30 minutes.
+
+Startup XYZ · Software Engineer · Jun 2020 to Dec 2021 · Remote
+· Built Python data ingestion pipeline processing 500K records daily into PostgreSQL.
+· Deployed Kubernetes cluster on AWS EKS, scaling from 3 to 12 nodes during traffic spikes.
+· Integrated gRPC service interfaces, reducing inter-service latency 3x versus REST.
+· Implemented OAuth 2.0 and JWT authentication, eliminating session token vulnerabilities.
+
+PROJECTS
+
+Open Source CLI Tool · github.com/johndoe/fastcli
+· Shipped a Python CLI processing 10K GitHub events/day for automated PR labeling.
+· Achieved 95% test coverage with pytest and reduced cold-start time 40% via lazy imports.
+
+EDUCATION
+Arizona State University · B.S. Computer Science · May 2020

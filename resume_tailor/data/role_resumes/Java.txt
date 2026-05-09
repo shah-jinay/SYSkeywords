@@ -1,0 +1,54 @@
+Jinay Shah
+ (203) 512-6561 | shah.jinay1999@gmail.com  | linkedin.com/in/jinayyshah/ | github.com/shah-jinay
+ 
+SUMMARY
+ 
+Java software engineer with 4+ years building production systems on Spring Boot microservices, event-driven architectures, and React/TypeScript frontends; recent focus on GenAI workflows, RAG pipelines, and LLM-powered developer tooling using Spring AI and LangChain4j.
+ 
+TECHNICAL SKILLS
+ 
+Languages: Java, Kotlin, SQL, TypeScript, JavaScript, Python
+Frameworks: Spring Boot, Spring MVC, Spring WebFlux, Spring Security, Spring Data JPA, Spring Cloud, Hibernate, Micronaut
+Frontend: React, Redux, WebSockets, Jest, React Testing Library
+Backend / APIs: REST, gRPC, GraphQL, OpenAPI 3.1, Maven, Gradle, JUnit 5, Mockito, Testcontainers
+GenAI / ML: Spring AI, LangChain4j, LLM integration, RAG pipelines, vector similarity search, embeddings, GitHub Copilot
+Datastores: PostgreSQL, MySQL, Redis, MongoDB, pgvector, Elasticsearch
+Messaging: Apache Kafka, RabbitMQ, AWS SQS/SNS, Spring Kafka
+Cloud / DevOps: AWS (S3, SQS, Lambda, EC2, EKS, RDS, CloudFront), Docker, Kubernetes, Terraform, GitHub Actions, Jenkins
+Security: OAuth 2.0, OIDC, JWT, Spring Security, RBAC
+Observability: OpenTelemetry, Micrometer, Prometheus, Grafana, ELK, JMeter, Gatling
+ 
+EXPERIENCE
+ 
+Software Developer - ASU Decision Theater | Tempe, AZ | May 2024 - Present
+·   Built React/TypeScript dashboards backed by Spring Boot REST services with filter-driven flows that map UI selections (trade, investment, PIVI) to query parameters, returning visualization-ready payloads for charts and maps used by policy stakeholders.
+·   Designed contract-first REST APIs in Spring Boot with Spring Security filters for JWT auth, structured logs via Logback/MDC, rate limiting, and Resilience4j circuit breakers; introduced correlation IDs across services to streamline incident triage.
+·   Architected GenAI workflows on async Spring Boot microservices over AWS SQS with DLQ and reply queues, using Spring AI and LangChain4j to translate natural-language questions into SQL for non-technical stakeholders.
+·   Reduced p95 latency 60% from 250ms to 100ms via PostgreSQL query tuning and indexing, parameter-aware Redis caching with Spring Cache, JPA fetch-plan tuning, and request-path optimization; validated with Gatling.
+·   Deployed enterprise Spring Boot workloads to EKS and RDS/Postgres with CloudWatch and IAM, containerized services with Docker and Kubernetes (Helm), and provisioned dev/staging/prod environments as code with Terraform.
+·   Collaborated cross-functionally with QA, product, and DevOps to deliver an LLM-powered JUnit test-generation tool integrated into Jenkins/GitHub Actions CI/CD pipelines, increasing test coverage 50% and cutting authoring effort 60%.
+ 
+Software Developer - KiVee Softech | Surat, India | January 2022 – July 2023
+·   Owned the voice biometrics platform built on Spring Boot with audio quality gates (SNR, clipping, voice activity) and a multi-threshold decision engine returning accept/reject/fallback with reason codes, reducing failed verifications 30% on noisy real-world audio.
+·   Engineered a high-concurrency booking service in Java using idempotency keys and compare-and-set over JPA optimistic locking, eliminating double-booking under retries and reconnect storms while preserving audit trails across concurrent agent workflows.
+·   Architected an event-driven distributed system on Apache Kafka with Spring Kafka, decoupling analytics, audit, and ML export pipelines from the synchronous request path so verification SLAs held during bursts; cut cross-team feature lead time 40%.
+·   Influenced platform roadmap by translating stakeholder workflows into reliability guardrails, RBAC via Spring Security, distributed tracing with OpenTelemetry, and dependency isolation patterns; led production incident response, halving mean time to resolution.
+ 
+Software Developer - Kintu Designs | Surat, India | February 2021 - January 2022
+·   Built a real-time personalized chat platform with React + Redux frontend and a Spring Boot backend using Spring WebSocket/STOMP, with reconnect handling, message ordering, retry-safe writes, and session restore.
+·   Modeled durable state in PostgreSQL via Spring Data JPA with EXPLAIN-driven indexing and layered Redis (Spring Cache + Lettuce) for hot reads and pub/sub fanout, tuning cache keys and TTLs to drop read latency 40% during traffic spikes.
+·   Integrated Java NLP and recommendation services behind a unified API edge with versioned OpenAPI schemas and request tracing via Sleuth/Zipkin, enabling cross-service debugging within a single chat turn.
+·   Established the team's engineering baseline, token-based auth with Spring Security, role-scoped admin actions, container builds, pre-merge contract validation, and JUnit 5 / Mockito test suites; mentored 2 juniors through structured PR reviews.
+ 
+PERSONAL PROJECTS
+ 
+OneSnap | Java, Spring Boot, PostgreSQL, AWS S3, React, Docker | August 2025 - Present
+·   Built QR photo and file sharing with a Spring Boot backend, signed-URL access via the AWS SDK for Java, direct-to-S3 uploads behind CloudFront, and idempotent upload finalization preventing duplicate records on client retries across concurrent sessions.
+ 
+AtlasDocs RAG Platform | Java, Spring Boot, Spring AI, LangChain4j, pgvector | May 2024 - July 2025
+·   Implemented end-to-end RAG pipeline (upload, parse, chunk, embed, retrieve) in Spring Boot using Spring AI and LangChain4j with pgvector search, citation-grounded LLM responses, and async @KafkaListener ingestion without blocking queries.
+ 
+EDUCATION
+ 
+Arizona State University - Master of Science, Information Technology | Tempe, AZ | August 2023 - May 2025
+Uka Tarsadia University - Bachelor of Engineering, Computer Engineering | Bardoli, India | July 2018 - May 2021

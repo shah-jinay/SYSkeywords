@@ -1,0 +1,53 @@
+Jinay Shah
+ (203) 512-6561 | shah.jinay1999@gmail.com  | linkedin.com/in/jinayyshah/ | github.com/shah-jinay
+
+SUMMARY
+
+Software Engineer with 3+ years of experience building C#/.NET and Angular applications, REST APIs, and distributed backend services. Improved API performance from 250ms p95 to 100ms, scaled services to 1,400+ RPS, and delivered containerized systems with Docker, Kubernetes, and CI/CD for production environments.
+
+TECHNICAL SKILLS
+
+Languages: C#, JavaScript, TypeScript, SQL
+Backend: ASP.NET Core, .NET Core, Web API, Entity Framework Core, LINQ, REST APIs
+Frontend: Angular, React, HTML, CSS, Bootstrap
+Databases: SQL Server, PostgreSQL, Redis
+Messaging & Architecture: Microservices, Kafka, RabbitMQ, API Gateway
+Cloud & DevOps: Azure, Docker, Kubernetes, CI/CD
+Testing: xUnit, NUnit, Postman, Swagger
+Tools & Practices: Git, SDLC, Agile
+
+EXPERIENCE
+
+Software Developer - ASU Decision Theater | Tempe, AZ | May 2024 - Present
+•	Built ASP.NET Core Web APIs that powered analytics and geospatial dashboards, supporting high-volume data access and improving frontend responsiveness through efficient service design, SQL database integration, and clear API contracts.
+•	Reduced p95 API latency from 250ms to 100ms by tuning PostgreSQL queries, optimizing request paths, and introducing Redis caching for frequently accessed data.
+•	Developed Angular dashboards that enabled users to filter, explore, and visualize large datasets, improving usability through responsive components and structured client-side state handling.
+•	Improved scalability and maintainability by structuring backend functionality into microservice-style components, separating API delivery, data processing, and analytics workflows.
+•	Strengthened production reliability by implementing structured logging, monitoring, and observability practices, accelerating debugging and reducing incident resolution time.
+•	Deployed containerized services with Docker and Kubernetes, improving consistency and enabling scalable cloud deployments.
+
+Software Developer - KiVee Softech | Surat, India | January 2022 – July 2023
+•	Created secure REST APIs and SQL-backed backend workflows for enterprise operations, improving service reliability through centralized validation, authentication, and standardized request handling.
+•	Designed Angular-based admin dashboards that streamlined enrollment, verification, and operational workflows, giving internal teams faster access to critical actions, status updates, and exception handling.
+•	Scaled background processing by implementing Kafka-based event-driven pipelines, decoupling asynchronous workloads from synchronous request processing.
+•	Standardized API behavior and security by introducing gateway patterns for routing, rate limiting, validation, and consistent error responses across distributed services.
+•	Organized backend business logic into modular service layers, simplifying feature updates, peer review, documentation, and defect resolution.
+
+Software Developer - Kintu Designs | Surat, India | February 2021 - January 2022
+•	Engineered a real-time messaging platform using WebSockets and REST APIs, enabling low-latency chat experiences and reliable message delivery across users.
+•	Crafted responsive Angular UI components for chat and admin workflows, improving user experience through dynamic updates and cleaner interaction flows.
+•	Optimized application performance during peak traffic by combining Redis caching with tuned PostgreSQL queries, reducing database load and response times.
+•	Unified communication between frontend and backend systems by implementing REST and real-time gateway services, improving web service integration across application modules.
+
+PERSONAL PROJECTS
+
+OneSnap | C#, ASP.NET Core Web API, Angular, Entity Framework Core, SQL Server| August 2025 - Present
+•	Designed a QR-based file sharing platform that enabled secure upload and access workflows by developing ASP.NET Core Web APIs, SQL-backed access rules, and Angular UI flows for file upload, sharing, and retrieval.
+
+AtlasDocs RAG Platform | C#, ASP.NET Core Web API, Angular, Entity Framework Core, PostgreSQL | May 2024 - July 2025
+•	Developed a document ingestion and retrieval platform that enabled users to upload, parse, store, and retrieve documents by designing ASP.NET Core services, database API workflows, validation logic, and Angular-based document management flows.
+
+EDUCATION
+
+Arizona State University - Master of Science, Information Technology | Tempe, AZ | August 2023 - May 2025
+Uka Tarsadia University - Bachelor of Engineering, Computer Engineering | Bardoli, India | July 2018 - May 2021

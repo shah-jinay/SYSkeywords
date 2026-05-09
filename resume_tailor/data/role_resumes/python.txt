@@ -1,0 +1,52 @@
+Jinay Shah
+ (203) 512-6561 | shah.jinay1999@gmail.com  | linkedin.com/in/jinayyshah/ | github.com/shah-jinay
+
+SUMMARY
+
+Software developer with 4+ years building production systems across React/TypeScript frontends, Python/FastAPI backends, and event-driven distributed architectures; recent focus on GenAI workflows, RAG pipelines, and LLM-powered developer tooling.
+
+TECHNICAL SKILLS
+
+Languages: Python, Java, SQL, TypeScript, JavaScript
+Frontend: React, Redux, WebSockets, Jest, React Testing Library
+Backend: FastAPI, Flask, Spring Boot, Express, Node.js, REST APIs, OpenAPI 3.1
+GenAI/ML: LLM integration, RAG pipelines, vector similarity search, embeddings, prompt engineering, GitHub Copilot
+Datastores: PostgreSQL, Redis, MongoDB, pgvector
+Cloud/DevOps: AWS (S3, SQS, Lambda, EC2, EKS, RDS, CloudFront), Docker, Kubernetes, Terraform, GitHub Actions, Kafka
+Security: OAuth 2.0, OIDC, JWT, RBAC
+Observability/Perf: OpenTelemetry, Prometheus, Grafana, k6, JMeter, Locust
+
+EXPERIENCE
+
+Software Developer - ASU Decision Theater | Tempe, AZ | May 2024 - Present
+•	Built React/TypeScript dashboards with filter-driven flows that map UI selections (trade, investment, PIVI) to query parameters, returning visualization-ready payloads for charts and maps used by policy stakeholders.
+•	Designed contract-first REST APIs with middleware for JWT auth, structured logs, rate limiting, and circuit breaking; introduced correlation IDs across services to streamline incident triage.
+•	Architected end-to-end GenAI workflows on async Python microservices over AWS SQS with DLQ and reply queues, translating natural-language business questions into SQL via LLM, returning analytical outputs to non-technical stakeholders.
+•	Reduced p95 latency by 60% from 250ms to 100ms through PostgreSQL query tuning, parameter-aware Redis caching, indexing improvements, and request path optimization; validated with k6 load testing and p99 tracking.
+•	Deployed enterprise workloads to EKS and RDS/Postgres with CloudWatch and IAM, containerized services with Docker and Kubernetes, and provisioned dev/staging/prod environments as code with Terraform.
+•	Collaborated cross-functionally with QA, product, and DevOps across two-week sprints to deliver an LLM-powered test-generation tool integrated into CI/CD pipelines increasing test coverage 50% and cutting manual authoring effort 60%.
+
+Software Developer - KiVee Softech | Surat, India | January 2022 – July 2023
+•	Owned the voice biometrics platform with audio quality gates (SNR, clipping, voice activity) and a multi-threshold decision engine returning accept/reject/fallback with reason codes, reducing failed verifications 30% on noisy real-world audio.
+•	Engineered a high-concurrency booking service using idempotency keys and compare-and-set semantics, eliminating double-booking under retries and reconnect storms while preserving audit trails across concurrent agent workflows.
+•	Architected an event-driven distributed system on Kafka, decoupling analytics, audit, and ML export pipelines from the synchronous request path so verification SLAs held during bursts; cut cross-team feature lead time 40%.
+•	Influenced platform roadmap by translating stakeholder workflows into reliability guardrails, role-based access, edge validation, distributed tracing, and dependency isolation patterns; led production incident response, cutting mean time in half.
+
+Software Developer - Kintu Designs | Surat, India | February 2021 - January 2022
+•	Built a real-time personalized chat platform (React + Redux frontend, Node.js/Express backend, WebSockets) with reconnect handling, message ordering, retry-safe writes, and session restore.
+•	Modeled durable state in PostgreSQL with EXPLAIN-driven indexing and layered Redis for hot reads and pub/sub fanout, tuning cache keys and TTLs to drop read latency 40% during traffic spikes.
+•	Integrated Python NLP and recommendation services behind a unified API edge with versioned schemas and request tracing, enabling cross-service debugging within a single chat turn.
+•	Established the team's engineering baseline, token-based auth, role-scoped admin actions, container builds, pre-merge contract validation, and Jest test suites; mentored 2 juniors through structured PR reviews.
+
+PERSONAL PROJECTS
+
+OneSnap | Python, FastAPI, PostgreSQL, AWS S3, React, Docker | August 2025 - Present
+•	Built QR-based photo and file sharing with signed-URL access, direct-to-S3 uploads behind CloudFront, and idempotent upload finalization preventing duplicate records on client retries across concurrent sessions.
+
+AtlasDocs RAG Platform | Python, FastAPI, PostgreSQL, AWS S3, React, Docker | May 2024 - July 2025
+•	Implemented an end-to-end RAG pipeline (upload, parse, chunk, embed, retrieve) with vector similarity search, citation-grounded LLM responses, and async workers handling ingestion without blocking query endpoints.
+
+EDUCATION
+
+Arizona State University - Master of Science, Information Technology | Tempe, AZ | August 2023 - May 2025
+Uka Tarsadia University - Bachelor of Engineering, Computer Engineering | Bardoli, India | July 2018 - May 2021

@@ -1,0 +1,11 @@
+out/*.pdf
+data/db/*.sqlite
+data/library.db
+__pycache__/
+src/tailor/__pycache__/
+tailor/__pycache__/
+tests/__pycache__/
+.pytest_cache/
+*.pyc
+.env
+.DS_Store

@@ -1,0 +1,25 @@
+{
+  "title": "Backend Software Engineer",
+  "company": "Stripe",
+  "CRITICAL": [
+    "Python",
+    "REST APIs",
+    "PostgreSQL",
+    "AWS",
+    "distributed systems"
+  ],
+  "IMPORTANT": [
+    "Docker",
+    "Kubernetes",
+    "CI/CD",
+    "observability",
+    "Kafka"
+  ],
+  "NICE_TO_HAVE": [
+    "Terraform",
+    "Redis",
+    "OpenTelemetry",
+    "FastAPI",
+    "microservices"
+  ]
+}

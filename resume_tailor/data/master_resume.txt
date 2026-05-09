@@ -1,0 +1,294 @@
+﻿Jinay Shah
+Software Engineer
+ (203) 512-6561 | shah.jinay1999@gmail.com  | linkedin.com/in/jinayyshah/ | github.com/shah-jinay
+ 
+SUMMARY
+ 
+·     Full-stack engineer with 4+ years building low-latency APIs and distributed systems using Python (FastAPI, Flask), Java (Spring Boot), and AWS. Scaled workloads to 1,400+ RPS and reduced p95 latency from 250ms to 100ms. Implements reliability patterns (idempotency, circuit breakers) and secures endpoints via OAuth 2.0 / OIDC and JWT.
+·     Backend leaning engineer with 3+ years building low-latency APIs, real-time dashboards, and distributed systems using Python (FastAPI, Flask), Java (Spring Boot), React/TypeScript, PostgreSQL, Redis, Kafka, and AWS.
+·     Delivered measurable impact including p95 latency 250ms to 100ms, throughput +60%, 2x dashboard performance, and scaling backend workloads up to 1,400+ RPS.
+·     Driven cross-functional technical leadership, authoring architecture documents (RFCs/ADRs), leading monolith-to-microservice migrations, managing Agile sprints as Scrum Master, and securing endpoints (OAuth2/OIDC, RBAC, OWASP mitigation).
+·     Strong in API design and contracts (OpenAPI), pagination and filtering, idempotency and dedupe, reliability patterns (retries, circuit breakers, rate limiting), and production operations (on-call, incident response, postmortems).
+·     Built cloud delivery pipelines and infrastructure using Docker, Kubernetes, Terraform, GitHub Actions, Jenkins, executing zero-downtime database migrations, driving cloud cost optimization, and ensuring end-to-end observability with OpenTelemetry.
+ 
+TECHNICAL SKILLS
+ 
+Languages: Python, Java, SQL (PostgreSQL), TypeScript, JavaScript
+Backend: FastAPI, Flask, Spring Boot, Node.js, REST APIs, WebSockets, OpenAPI 3.1
+Security & IAM: OAuth 2.0, OIDC, RBAC, JWT, AWS Secrets Manager, HashiCorp Vault, OWASP Mitigation
+Distributed Systems: Kafka, Redis, circuit breakers, retries, dedupe, idempotency
+Databases & Migrations: PostgreSQL, MongoDB, pgvector, Alembic, Flyway, Liquibase
+Testing: integration tests, contract tests, unit tests, Pytest, Jest
+Performance: load testing (k6, JMeter, Locust), profiling, p95 and p99, EXPLAIN plans
+Cloud/DevOps: AWS (S3, CloudFront, CloudWatch, EC2, Lambda, ECS), Docker, Kubernetes, Terraform, GitHub Actions, Jenkins, Cost Optimization
+Observability: OpenTelemetry, CloudWatch, Prometheus, Grafana, structured logging, correlation IDs
+AI/ML: TensorFlow, MFCC, SpaCy, RAG, LangChain
+Certificates: AWS Academy Data Engineering, Algorithmic Toolbox, AWS Fundamentals: Going Cloud-Native
+ 
+EXPERIENCE
+ 
+Software Developer                                                                                                                            May 2024 - Present
+ASU Decision Theater                                                                                                                                  Tempe, AZ 
+ 
+Frontend & Web
+·     Built React + TypeScript dashboards with a filter-state-driven data flow where UI selections deterministically map to query params, returning visualization-ready payloads for charts/maps without client-side reshaping.
+·     Implemented a data adapter layer that normalizes backend payloads (time-series, categorical breakdowns, GeoJSON) into stable UI models, preventing visualization logic from leaking into components.
+·     Implemented schema-aligned frontend models that mirror backend OpenAPI 3.1 contracts, preventing silent breakages when response shapes evolve and enabling faster FE/BE iteration.
+·     Added UI guardrails for interactive analytics, bounding query ranges and requiring key filters to avoid unbounded responses and protect backend resources from “expensive query” patterns.
+·     Enforced code quality gates using ESLint + Prettier and strict TS settings to catch runtime class errors (nullability, shape mismatches) at compile time.
+ 
+Databases & Data Access
+·     Modeled analytics datasets in PostgreSQL, optimizing for interactive slicing by parameterized filtering, selective projections (return only needed columns), and predictable query shapes for chart/map endpoints.
+·     Executed zero-downtime schema migrations using Alembic + Flyway/Liquibase patterns (expand, backfill, cutover) so deployments during active stakeholder usage.
+·     Implemented server-side transformation workflows ([Pandas/NumPy]) that produce query-friendly tables and derived metrics, keeping the database optimized for retrieval and the API optimized for presentation.
+·     Tuned concurrency and throughput by adjusting connection pool settings and shaping query plans using load-test evidence, with repeatable benchmarks.
+ 
+Microservices & Integration
+·     Structured backend services as clear modules: routing + validation → cache → DB access → transformation → response formatting, isolating concerns so performance bugs can be traced to a single layer.
+·     Designed REST APIs with resource modeling, stable error handling, sorting, and consistent validation to avoid one-off endpoints and keep UI integration predictable.
+·     Shipped contract-first REST APIs with OpenAPI and strict request/response schemas (Pydantic models), using generated docs to reduce integration drift between frontend and backend.
+·     Implemented consistent error semantics (typed error codes, safe messages, no stack traces in responses) so the UI can handle failure modes without brittle string parsing.
+·     Maintained OpenAPI 3.1 as the source of truth, aligning runtime behavior to the spec and using schema-driven validation so errors instead of latent data issues.
+·     Implemented reliability patterns including timeouts, retries with backoff, circuit breakers, and rate limiting, preventing cascading failures under dependency instability.
+·     Implemented idempotency + dedupe guards on retryable workflows to prevent duplicate side effects and client retries.
+ 
+Cloud
+·     Deployed workloads on AWS (EKS, RDS/Postgres, CloudWatch, IAM), aligning compute, storage, and monitoring for production reliability.
+·     Configured network and access boundaries using least-privilege policies (for example IAM roles, security groups) to protect data and service-to-service communication.
+·     Reduced cloud spend and improved throughput by right-sizing compute, introducing cache-first paths for repeat reads, and deduplicating downstream API calls, with impact measured through operational dashboards and capacity metrics.
+·     Containerized services with Docker and deployed on Kubernetes, configuring readiness/liveness probes to prevent routing traffic to unhealthy or warming pods.
+·     Provisioned cloud infrastructure with Terraform, creating reproducible, drift-resistant dev/stage/prod environments.
+·     Built CI/CD with GitHub Actions + Jenkins, enforcing test gates and release checks to improve deployment reliability and reduce manual work while enabling frequent iteration.
+ 
+Security
+·     Hardened API endpoints against OWASP API Top 10 failure modes by enforcing object-level authorization checks whenever IDs are accepted and by validating access on every data fetch path.
+·     Implemented OWASP-aligned API safeguards by enforcing request limits and rate limiting to mitigate Unrestricted Resource Consumption and reduce DoS and cost-explosion risk.
+·     Implemented protections for unrestricted resource consumption by bounding query ranges, limiting payload sizes, and applying request throttling patterns where needed.
+·     Secured endpoints using OAuth 2.0/OIDC, RBAC, and JWT, applying least-privilege authorization checks consistently across API surfaces.
+·     Centralized secrets management using AWS Secrets Manager and HashiCorp Vault patterns to prevent credential sprawl and accidental leakage in logs or config.
+ 
+Testing & QA
+·     Built backend tests with pytest + FastAPI TestClient, validating endpoint behavior, schema contracts, and edge cases (empty ranges, missing filters, invalid enum values).
+·     Added regression tests for caching correctness, asserting cache keys incorporate all query-defining params and that invalidation logic prevents stale results after dataset refresh.
+·     Implemented “golden output” checks for critical transformations (known inputs produce stable outputs), preventing silent correctness regressions in policy-facing analytics.
+·     Built unit + integration tests covering validation, pagination/filter correctness, and database interactions, catching breaking changes before release.
+·     Added contract tests to lock client-server compatibility to the API schema, preventing “works locally” mismatches from reaching production.
+·     Enforced CI quality gates so merges require tests to pass and releases follow consistent build, scan, and verification steps.
+ 
+Logging & Observability
+·     Instrumented services with OpenTelemetry and propagated correlation context end-to-end so traces, logs, and metrics can be stitched across service boundaries for root-cause analysis.
+·     Implemented structured logging with request IDs and high-signal fields (endpoint, params hash, cache hit/miss, DB time, transform time), enabling rapid isolation of latency hot spots.
+·     Built dashboards/alerts around key SLO indicators (p95 latency, error rate, cache hit rate, DB timeouts), using observability correlation to jump from a slow trace to the exact log context.
+·     Built dashboards and alerts in CloudWatch/Prometheus/Grafana tracking p95/p99 latency, error rate, cache hit rate, and DB timings to detect regressions early and reduce MTTR.
+ 
+Source Control & Collaboration
+·     Ran a PR-first workflow with small, reviewable changesets, using code reviews to enforce API contract stability, migration safety, and rollout readiness.
+·     Coordinated changes across frontend/backend by documenting API contracts (OpenAPI) and treating schema changes as versioned interfaces.
+·     Authored RFCs/ADRs to align teams before implementation, reducing rework and clarifying trade-offs across caching strategy, API contract boundaries, and rollout plans.
+·     Partnered with PM and UX to translate requirements into Jira epics, technical tasks, and sprint deliverables, aligning scope, sequencing, and acceptance criteria.
+ 
+Architecture & Engineering Practices
+·     Documented tradeoffs and system decisions using lightweight ADRs/RFCs (caching strategy, contract boundaries, deployment strategy), turning tribal knowledge into repeatable engineering practice.
+·     Designed a cache-first architecture with parameter-aware keys and versioned invalidation, optimizing for interactive workloads while maintaining correctness guarantees under frequent filter changes.
+·     Applied “blast radius thinking”: strict environment separation, safe rollouts, bounded queries, and observable execution paths to keep stakeholder-facing systems reliable.
+·     Reduced p95 latency 250ms to 100ms by combining PostgreSQL query tuning, parameter-aware Redis caching, and request-path optimization, then validated gains with load testing and p95/p99 monitoring.
+·     Built parameter-aware caching with correct cache-key construction and controlled invalidation/versioning, preserving correctness under frequent filter changes and high read bursts.
+·     Implemented production reliability patterns including retries with backoff, circuit breakers, timeouts, and rate limiting, preventing cascading failures during dependency instability and burst traffic.
+ 
+Soft Skills
+·     Translated ambiguous stakeholder questions into concrete system capabilities (filters, metrics, scenario comparisons), iterating quickly while protecting correctness and performance.
+·     Communicated system behavior in demos using clear mental models (data flow, caching behavior, “why” behind metrics), increasing trust and adoption with non-technical stakeholders.
+·     Owned issues end-to-end: reproduce, isolate with traces/logs, ship a fix with tests, and prevent recurrence via guardrails and monitoring.
+·     Led sprint planning and agile ceremonies as Scrum Master, aligning scope, sequencing, and execution to deliver high-priority platform work predictably.
+·     Owned operational outcomes through on-call, incident response, and postmortems, converting incidents into concrete follow-ups such as improved dashboards, safer retry policies, and stronger validation.
+ 
+Software Developer                                                                                                                     January 2022 – July 2023
+KiVee Softech                                                                                                                                             Surat, India
+ 
+Frontend & Web
+·     Built an internal Agent/Admin Console as the single pane of glass for voice enrollment, verification outcomes, fallback prompts, booking initiation, and audit review, optimized for fast agent workflows.
+·     Implemented component-based screens (enrollment panel, booking form, audit viewer) that call only the gateway layer, keeping UI logic decoupled from core services and minimizing integration churn.
+ 
+API Gateway & Edge Layer
+·     Built an API Gateway/Edge as the single ingress for UI and optional IVR integrations, enforcing AuthN/AuthZ, request validation, rate limiting, normalized errors, and correlation IDs across all requests.
+ 
+Authentication & Authorization
+·     Implemented centralized AuthN/AuthZ issuing signed session tokens and enforcing RBAC (agent, supervisor, admin), keeping privileged actions (enroll, verify, book, audit) protected and auditable.
+ 
+Voice Biometrics (Enrollment, Verification, Fallback)
+·     Built a voice enrollment pipeline that normalizes audio and generates a stable voiceprint using a consistent MFCC → embedding feature path, then persists voiceprint metadata for traceability and model evolution.
+·     Added enrollment quality gates (SNR estimate, clipping detection, voice activity ratio) to block unusable samples and protect downstream verification accuracy.
+·     Implemented low-latency verification using identical MFCC extraction for feature parity, embedding generation, and similarity scoring against stored voiceprints.
+·     Designed a decision engine with multi-threshold logic returning accept / reject / fallback, issuing reason codes and routing uncertain cases to a governed fallback flow instead of brittle hard-fail behavior.
+ 
+Booking & Transaction Correctness
+·     Built a high-concurrency Booking/Transaction Service as the system of record for create/update flows, designed for correctness under retries, spikes, and partial failures.
+·     Implemented idempotency keys for non-idempotent write operations so client retries collapse safely without duplicating side effects.
+·     Enforced atomic updates / compare-and-set semantics to prevent race conditions during concurrent booking updates while maintaining a clean audit trail.
+ 
+Event-Driven Architecture (Kafka + Workers)
+·     Introduced an event bus with Kafka topics to decouple heavy and non-critical workloads from the request path, preserving low-latency verification and booking SLAs during bursts.
+·     Published domain events (booking.created/updated, audit actions, enrollment events) to enable downstream consumers for analytics aggregation, notifications, auditing, and ML export pipelines without coupling side effects to synchronous APIs.
+·     Implemented worker-side failure isolation using circuit breaker protection to prevent repeated calls to unstable dependencies and reduce cascading retries.
+ 
+Data Stores & Data Access
+·     Stored flexible voiceprint metadata and evolving audit/event documents in a schema-flexible datastore suited for rapidly changing model/version tags and quality metrics.
+·     Persisted raw audio artifacts (where retention policies allow) in object storage, separating unstructured blobs from transactional booking data and voiceprint embeddings.
+·     Designed transactional booking writes so duplicate requests return prior results, preventing “double-booking” behavior under client retries.
+ 
+Security
+·     Enforced gateway-level protection with centralized AuthN/AuthZ, RBAC authorization checks, request validation, and rate limiting to protect sensitive enrollment/verification/booking operations.
+·     Logging & Observability
+·     Implemented end-to-end traceability using correlation IDs at the gateway and propagated context across service boundaries to connect UI actions to downstream service execution.
+·     Enabled distributed observability via context propagation so logs/metrics/traces can be correlated for end-to-end debugging and root-cause isolation across microservices and async workers.
+ 
+Architecture & Engineering Practices
+·     Designed the system as microservices + event streaming so latency-critical requests (verification, booking) remain fast while heavier workloads (analytics, auditing, ML exports) run asynchronously and scale independently.
+·     Operationalized ML uncertainty with explicit fallback orchestration, turning noisy/ambiguous real-world audio conditions into a controlled user flow rather than unpredictable failures.
+ 
+Soft Skills
+·     Translated call-center workflow needs into enforceable platform guardrails (idempotency, fallback, auditability), aligning UX behavior with correctness and reliability requirements.
+·     Designed interfaces and contracts so teams could extend the platform safely via new Kafka consumers (analytics, reporting, retraining exports) without changing core request-path services.
+ 
+ 
+Software Developer                                                                                                                 February 2021 - January 2022
+Kintu Designs                                                                                                                                             Surat, India 
+ 
+Frontend & Web
+·     Built a React + Redux web app (Chat UI + Admin Console) with a predictable state model for sessions, messages, and agent actions.
+·     Implemented real-time chat UX using WebSockets, handling reconnects, message ordering, and UI-safe retries for network churn.
+·     Designed a contract-first UI data layer, mapping API payloads into stable frontend models to prevent breaking UI changes.
+·     Added input validation and UX guardrails (timeouts, disabled states, error recovery) to keep long-running chat flows reliable.
+·     Wrote Jest + React Testing Library suites to protect critical flows like chat send, admin actions, and session restore.
+ 
+Databases & Data Access
+·     Modeled durable chat and admin data in PostgreSQL, separating long-lived records (users, sessions, history) from ephemeral events.
+·     Tuned Postgres query performance using indexing and EXPLAIN-driven query shape fixes to keep read latency predictable.
+·     Introduced Redis caching for hot reads and session context to reduce database pressure during chat spikes.
+·     Built safe persistence paths that write to Postgres first, then publish updates to real-time consumers for consistent UX.
+·     Designed cache keys and TTLs to keep catalog, rules, and session state accurate while improving responsiveness.
+ 
+Microservices & Integration
+·     Implemented a Node.js (Express) API Gateway that unified REST + WebSocket traffic and routed requests to backend services.
+·     Integrated Python NLP and recommendation services behind the gateway, standardizing request schemas and response contracts.
+·     Added correlation IDs across gateway and services to trace a single chat turn end-to-end during production incidents.
+·     Applied idempotency and dedupe guards to protect against retries, reconnect storms, and duplicate message delivery.
+·     Used Redis pub/sub for real-time fanout where best-effort delivery was acceptable, with durable state stored in Postgres.
+ 
+ 
+ 
+ 
+Cloud
+·     Designed the system for cloud deployment with clear separation of stateless gateway/services and stateful data stores.
+·     Planned scaling for real-time workloads by keeping WebSocket workloads horizontally scalable and isolating bottleneck dependencies.
+·     Structured storage for session history, admin audits, and configuration so services could be deployed independently and safely.
+·     Defined operational metrics for cloud readiness, including latency targets, error rates, and reconnect behavior thresholds.
+·     Enabled environment parity by standardizing configuration and deployment expectations across dev, staging, and prod.
+ 
+DevOps & Containers
+·     Containerized gateway and services with Docker to ensure reproducible builds and consistent local-to-prod behavior.
+·     Established CI workflows to run linting, unit tests, and contract checks before merge to reduce regressions.
+·     Standardized environment configuration and secrets handling to prevent drift across deployments.
+·     Built deploy pipelines that support safe rollouts and quick rollback for gateway changes affecting real-time chat.
+·     Added runbooks and operational checklists for releases impacting WebSocket stability and database migrations.
+ 
+Security
+·     Implemented JWT-based authentication and RBAC controls for Admin Console actions and protected endpoints.
+·     Enforced input validation and sanitization at the gateway to reduce injection risk and malformed payload failures.
+·     Applied web security fundamentals: CORS controls, secure session handling, and least-privilege access patterns.
+·     Designed service boundaries so sensitive operations are gated behind explicit authorization checks and audited.
+·     Introduced policy controls that prevent unsafe requests from reaching NLP and recommendation services.
+ 
+Testing & QA
+·     Built unit and integration tests for frontend and backend flows using Jest + React Testing Library for UI reliability.
+·     Created fixture-based test replay for chat transcripts to reproduce issues and validate regression fixes.
+·     Added contract validation to catch API shape changes early and prevent frontend breakages from backend updates.
+·     Implemented negative testing for edge cases like reconnects, partial failures, invalid payloads, and timeout scenarios.
+·     Used performance-oriented tests to validate behavior under burst traffic and concurrent sessions.
+ 
+Logging & Observability
+·     Implemented structured logging with consistent fields for session, user, request, and correlation IDs across services.
+·     Added end-to-end tracing via correlation IDs to debug latency spikes and identify failure points across gateway and services.
+·     Defined operational dashboards and alerts around p95 latency, error rates, reconnect frequency, and queue/fanout health.
+·     Instrumented cache and DB metrics to catch cache miss storms and slow query regressions before they impacted users.
+·     Established incident workflows for rapid triage using logs, metrics, and traceable request lifecycles.
+ 
+Source Control & Collaboration
+·     Used Git-based workflows with PR reviews, branch protection, and CI gates to maintain code quality.
+·     Drove cross-team alignment through clear tickets, scoped milestones, and predictable release notes for internal stakeholders.
+·     Documented key decisions and tradeoffs (gateway responsibilities, data flow, caching boundaries) for long-term maintainability.
+·     Standardized review checklists for security, performance, schema compatibility, and failure-mode coverage.
+·     Coordinated releases across frontend, gateway, and services to avoid contract drift and downtime.
+ 
+Architecture & Engineering Practices
+·     Designed an event-driven architecture where durable writes occur in Postgres first, then real-time updates stream to clients.
+·     Established clear module boundaries: UI, Gateway, NLP, Recommender, Postgres, and Redis to reduce coupling.
+·     Introduced deterministic state handling with Redux and schema-aligned contracts to prevent inconsistent UI behavior.
+·     Applied production-grade reliability patterns: retries with guardrails, idempotency keys, dedupe, and safe reconnect handling.
+·     Prioritized performance engineering using query analysis, caching strategy, and predictable payload shapes.
+ 
+Soft Skills
+·     Led technical discussions to convert vague product needs into concrete API contracts, data models, and reliability requirements.
+·     Communicated tradeoffs clearly, balancing real-time UX goals with durability, consistency, and operational simplicity.
+·     Collaborated with stakeholders to iterate quickly while keeping changes safe through tests, reviews, and staged releases.
+·     Owned debugging and incident response by tracing issues across services and documenting fixes for future prevention.
+·     Wrote clean, maintainable code and guided peers through reviews focused on correctness, performance, and resilience.
+ 
+PROJECTS
+ 
+OneSnap | Python, FastAPI, PostgreSQL, AWS S3, CloudFront, React, Docker
+What it is
+·       QR-based photo sharing and file sharing with secure access patterns and scalable file delivery.
+ 
+Architecture and Backend
+·       Implemented upload APIs with validation, secure token handling, and safe retry behavior.
+·       Built idempotent operations for upload finalization and metadata creation to prevent duplicate records on retry.
+·       Added pagination and filtering for file and album listings so UI can scale without loading everything at once.
+Storage and Delivery
+·       Implemented direct-to-S3 upload flow and CloudFront delivery patterns to reduce backend bandwidth costs and avoid proxy bottlenecks.
+·       Designed lifecycle policies for cleanup and retention using Terraform.
+Reliability and Observability
+·       Added structured logging and correlation IDs to trace upload and share flows end-to-end.
+·       Added load tests to validate upload and download behavior under burst traffic and tuned caching or DB queries based on results.
+Testing
+·       Added integration tests for auth flows, upload finalization, and share link behavior.
+·       Added contract tests for API request/response compatibility across versions.
+ 
+AtlasDocs RAG Platform | Python, FastAPI, PostgreSQL, AWS S3, React, Docker
+What it is
+·       Document upload plus Q&A over documents with retrieval and grounded answers.
+Core Pipeline
+·       Implemented document upload, parsing, chunking, and metadata persistence.
+·       Built retrieval APIs with pagination and filtering for document lists, search results, and query history.
+Quality and Reliability
+·       Implemented dedupe safeguards for repeated uploads and repeated processing events.
+·       Added correlation IDs to trace user query through retrieval, ranking, and response assembly for debugging.
+Testing and Load
+·       Built integration tests validating retrieval correctness, permissions, and response structure.
+·       Load tested query endpoints and optimized DB indexes and caching strategy for hot reads.
+ 
+EventStream Guardian | Java, Spring Boot, Kafka, Redis, PostgreSQL, Prometheus, Grafana
+What it is
+·       Kafka ingestion service for API log streams plus analytics endpoints and traffic controls.
+Core System
+·       Built Kafka consumers and processors with safe retry behavior, dedupe where required, and consistent failure handling.
+·       Exposed REST endpoints with pagination and filtering for analytics queries.
+Reliability and Ops
+·       Implemented Redis token-bucket rate limiting, per-key quotas, and safe enforcement to protect shared infrastructure.
+·       Added structured logs with correlation IDs and monitoring dashboards in Prometheus and Grafana.
+·       Added load tests for ingestion and query endpoints to validate performance under spikes.
+CivicPulse | Java, Spring Boot, Kafka, Redis, PostgreSQL, Prometheus, Grafana
+What it is
+·       Streaming alerts pipeline plus automated summarization and routing.
+Core System
+·       Built event-driven routing with Kafka and Spring Boot, optimized for latency and throughput.
+·       Added failure isolation and retry mechanisms for downstream systems.
+Testing, Observability, and Ops
+·       Added integration tests for routing rules, event ordering expectations, and failure handling.
+·       Added dashboards and alerts tracking lag, failure rates, and p95/p99 latency, and used results to tune partitions and consumer concurrency.
+EDUCATION
+ 
+Arizona State University                                                                                                                    08/2023 - 05/2025 
+Master of Science, Information Technology                                                                                                       Tempe, AZ 
+Uka Tarsadia University                                                                                                                    07/2018 - 05/2021
+Bachelor of Engineering, Computer Engineering                                                                                             Bardoli, India 

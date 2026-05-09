@@ -1,0 +1,51 @@
+Jinay Shah
+ (203) 512-6561 | shah.jinay1999@gmail.com  | linkedin.com/in/jinayyshah/ | github.com/shah-jinay
+
+SUMMARY
+
+Software Engineer with 4+ years of experience building Go backend services, AI powered workflows, REST APIs, event driven systems, and cloud native microservices. Strong background in Golang, Python, PostgreSQL, Redis, Kafka, AWS, Docker, Kubernetes, OpenTelemetry, RAG pipelines, LLM integration, vector search, async workers, and production performance tuning.
+
+TECHNICAL SKILLS
+
+Languages: Go, Python, SQL, TypeScript, Java, JavaScript
+Backend: Golang, Gin, Chi, net/http, gRPC, REST APIs, OpenAPI, microservices, distributed systems
+AI and GenAI: LLM integration, RAG pipelines, embeddings, vector search, pgvector, prompt engineering, natural language to SQL
+Data and Messaging: PostgreSQL, Redis, MongoDB, Kafka, AWS SQS, AWS SNS, DLQs, async workers
+Cloud and DevOps: AWS, EKS, RDS, S3, Lambda, CloudWatch, Docker, Kubernetes, Terraform, GitHub Actions
+Security and Observability: OAuth 2.0, OIDC, JWT, RBAC, IAM, OpenTelemetry, Prometheus, Grafana, structured logging
+
+EXPERIENCE
+
+Software Developer - ASU Decision Theater | Tempe, AZ | May 2024 - Present
+•	Built Go backend APIs for React and TypeScript analytics dashboards, transforming trade, investment, and PIVI filters into query driven payloads for maps, charts, and stakeholder reporting.
+•	Designed contract first REST services in Go using OpenAPI, JWT middleware, structured logging, rate limiting, circuit breakers, and consistent error responses for production APIs.
+•	Developed AI powered workflows using Go and Python microservices over AWS SQS, DLQs, and reply queues to translate natural language business questions into SQL based insights.
+•	Reduced p95 latency by 60%, from 250ms to 100ms, by tuning PostgreSQL queries, Redis caching, indexes, request handlers, and high traffic backend execution paths.
+•	Deployed Go services to AWS EKS and RDS PostgreSQL using Docker, Kubernetes, Terraform, IAM, CloudWatch, and environment specific infrastructure.
+•	Delivered an LLM powered test generation tool inside CI/CD workflows, increasing test coverage by 50% and reducing manual test authoring effort by 60%.
+
+Software Developer - KiVee Softech | Surat, India | January 2022 – July 2023
+•	Owned Go backend services for a voice biometrics platform, adding audio quality gates, SNR checks, clipping detection, voice activity rules, and reason coded verification responses.
+•	Built decision workflows returning accept, reject, or fallback outcomes for biometric verification, reducing failed checks by 30% on noisy real world audio.
+•	Engineered a high concurrency booking service in Go using idempotency keys, transaction boundaries, compare and set semantics, and retry safe writes to prevent duplicate reservations.
+•	Built Kafka based event driven Go services that decoupled analytics, audit, and ML export pipelines from synchronous request flows while preserving verification SLAs during bursts.
+•	Led production incident response using structured logs, correlation IDs, service metrics, and trace data, cutting mean time to resolution by half.
+
+Software Developer - Kintu Designs | Surat, India | February 2021 - January 2022
+•	Built a real time chat platform with React, Redux, Go APIs, and WebSockets, supporting reconnect handling, message ordering, retry safe writes, and session restore.
+•	Modeled durable chat state in PostgreSQL and optimized read heavy paths with Redis caching, cache key design, TTL tuning, and pub/sub fanout to reduce latency by 40%.
+•	Integrated Python NLP and recommendation services behind a unified Go API layer with versioned schemas, request tracing, and consistent error handling across services.
+•	Mentored 2 junior developers on API design, database modeling, debugging, test coverage, and production safe backend changes.
+
+PERSONAL PROJECTS
+
+OneSnap | Python, FastAPI, PostgreSQL, AWS S3, React, Docker | August 2025 - Present
+•	Built QR-based photo and file sharing with signed-URL access, direct-to-S3 uploads behind CloudFront, and idempotent upload finalization preventing duplicate records on client retries across concurrent sessions.
+
+AtlasDocs RAG Platform | Go, Python, PostgreSQL, pgvector, AWS S3, React, Docker | May 2024 - July 2025
+•	Implemented a RAG platform with Go APIs for upload, document search, retrieval, and citation delivery, plus async workers for parsing, chunking, embeddings, vector search, and LLM response generation.
+
+EDUCATION
+
+Arizona State University - Master of Science, Information Technology | Tempe, AZ | August 2023 - May 2025
+Uka Tarsadia University - Bachelor of Engineering, Computer Engineering | Bardoli, India | July 2018 - May 2021

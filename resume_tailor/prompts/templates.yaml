@@ -1,0 +1,89 @@
+kubernetes:
+  verbs: [Deployed, Orchestrated, Migrated, Scaled, Managed]
+  context: containerized workloads on Kubernetes
+  result_range: ["reducing infrastructure cost 30%+", "achieving 99.9% uptime", "cutting deployment time 50%+"]
+  tech: [Kubernetes, Helm, kubectl, Docker, container orchestration]
+
+kafka:
+  verbs: [Engineered, Built, Designed, Instrumented, Scaled]
+  context: Kafka-based event streaming pipeline
+  result_range: ["processing ~5M events/day", "at sub-100ms p99 latency", "with zero message loss"]
+  tech: [Apache Kafka, Kafka Streams, event-driven architecture, message queues]
+
+postgresql:
+  verbs: [Optimized, Designed, Migrated, Implemented, Engineered]
+  context: PostgreSQL relational data layer
+  result_range: ["reducing query latency 60%+", "supporting ~10M records", "cutting index scan time 40%+"]
+  tech: [PostgreSQL, SQL, database indexing, query optimization, schema design]
+
+aws:
+  verbs: [Architected, Deployed, Migrated, Automated, Scaled]
+  context: AWS cloud infrastructure
+  result_range: ["cutting cloud spend 25%+", "for ~100K+ daily active users", "achieving 99.95% availability"]
+  tech: [AWS, EC2, S3, Lambda, RDS, ECS, IAM, CloudFormation]
+
+cicd:
+  verbs: [Automated, Migrated, Built, Standardized, Streamlined]
+  context: CI/CD pipelines
+  result_range: ["cutting release cycle from 3 days to under 4 hours", "reducing deploy failures 70%+", "shipping 2x faster"]
+  tech: [GitHub Actions, Jenkins, CircleCI, CI/CD, Docker, automated testing]
+
+terraform:
+  verbs: [Automated, Provisioned, Migrated, Standardized, Built]
+  context: infrastructure-as-code with Terraform
+  result_range: ["reducing provisioning time 80%+", "managing 40+ cloud resources", "eliminating manual drift"]
+  tech: [Terraform, IaC, infrastructure as code, HCL, AWS provider]
+
+redis:
+  verbs: [Implemented, Integrated, Designed, Optimized, Built]
+  context: Redis caching layer
+  result_range: ["reducing database load 50%+", "cutting API latency 4x", "supporting ~50K req/sec"]
+  tech: [Redis, caching, in-memory data store, pub/sub, session management]
+
+grpc:
+  verbs: [Designed, Built, Migrated, Implemented, Engineered]
+  context: gRPC service interfaces
+  result_range: ["reducing inter-service latency 3x", "serving ~1M daily requests", "with strongly typed contracts"]
+  tech: [gRPC, Protocol Buffers, protobuf, RPC, service mesh]
+
+observability:
+  verbs: [Instrumented, Built, Designed, Established, Integrated]
+  context: observability and monitoring stack
+  result_range: ["reducing MTTR 60%+", "achieving p99 latency visibility", "catching 90%+ of regressions in staging"]
+  tech: [OpenTelemetry, Prometheus, Grafana, distributed tracing, metrics, logging]
+
+go:
+  verbs: [Built, Engineered, Developed, Refactored, Shipped]
+  context: high-performance Go services
+  result_range: ["handling ~12M API calls/day", "at 99.9% uptime", "with sub-10ms median latency"]
+  tech: [Go, Golang, goroutines, channels, gRPC, standard library]
+
+python:
+  verbs: [Developed, Built, Engineered, Automated, Implemented]
+  context: Python backend services and tooling
+  result_range: ["processing ~2M records/day", "reducing runtime 40%+", "cutting dev cycle time 30%+"]
+  tech: [Python, FastAPI, Flask, Django, asyncio, pandas, SQLAlchemy]
+
+microservices:
+  verbs: [Migrated, Decomposed, Architected, Built, Refactored]
+  context: microservices architecture
+  result_range: ["enabling independent scaling of 5+ services", "cutting release blast radius 70%+", "reducing coupling across 8+ teams"]
+  tech: [microservices, service mesh, API gateway, distributed systems, Docker, Kubernetes]
+
+security:
+  verbs: [Hardened, Implemented, Designed, Audited, Enforced]
+  context: application and infrastructure security
+  result_range: ["eliminating OWASP Top 10 vulnerabilities", "achieving SOC 2 compliance", "reducing attack surface 40%+"]
+  tech: [OAuth 2.0, JWT, TLS, IAM, secrets management, SAST, dependency scanning]
+
+ml:
+  verbs: [Trained, Deployed, Built, Engineered, Optimized]
+  context: machine learning models and pipelines
+  result_range: ["achieving 92%+ accuracy", "reducing inference latency 3x", "serving ~100K predictions/day"]
+  tech: [machine learning, PyTorch, scikit-learn, model serving, feature engineering, MLflow]
+
+datadog:
+  verbs: [Instrumented, Integrated, Built, Established, Deployed]
+  context: Datadog APM and monitoring
+  result_range: ["reducing alert noise 60%+", "achieving full-stack traceability", "cutting MTTR from hours to minutes"]
+  tech: [Datadog, APM, distributed tracing, dashboards, alerting, log management]
